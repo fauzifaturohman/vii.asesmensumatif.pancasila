@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tugas Online — Pendidikan Pancasila Kelas VII</title>
+<style>
+  :root{
+    --merah:#b91c1c; --merah-dark:#7f1d1d; --merah-soft:#fef2f2;
+    --bg:#f1f5f9; --card:#ffffff; --text:#1e293b; --muted:#64748b;
+    --line:#e2e8f0; --green:#15803d; --green-soft:#f0fdf4;
+    --red:#dc2626; --red-soft:#fef2f2;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 16px 64px;}
+
+  header.top{background:linear-gradient(135deg,var(--merah-dark),var(--merah) 60%,#dc2626);
+    color:#fff; padding:36px 20px 30px; text-align:center;
+    border-radius:0 0 26px 26px; box-shadow:0 10px 26px -12px rgba(185,28,28,.7);
+    margin-bottom:26px;}
+  header.top .star{font-size:30px; line-height:1;}
+  header.top h1{margin:10px 0 6px; font-size:clamp(1.3rem,4vw,1.9rem); letter-spacing:.3px;}
+  header.top p{margin:0; opacity:.92; font-size:.95rem;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:22px 22px 18px; margin-bottom:20px;
+    box-shadow:0 2px 10px -6px rgba(15,23,42,.25);}
+  .card-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .card-head h2{margin:0; font-size:1.06rem; color:var(--merah-dark);}
+  .badge{background:var(--merah-soft); color:var(--merah); font-size:.72rem; font-weight:700;
+    padding:3px 10px; border-radius:999px; border:1px solid #fecaca; letter-spacing:.4px; text-transform:uppercase;}
+  .hint{color:var(--muted); font-size:.85rem; margin:2px 0 14px;}
+
+  .intro p{margin:0 0 12px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:.85rem; font-weight:600; margin-bottom:6px; color:#334155;}
+  .field input{width:100%; padding:11px 13px; border:1.5px solid var(--line); border-radius:12px;
+    font-size:.95rem; font-family:inherit; background:#f8fafc; transition:.18s;}
+  .field input:focus{outline:none; border-color:var(--merah); background:#fff; box-shadow:0 0 0 3px rgba(185,28,28,.1);}
+  .err{color:var(--red); font-size:.85rem; margin-top:6px; display:none;}
+
+  .mat-label{font-size:.85rem; font-weight:700; color:#334155; margin:18px 0 10px;
+    display:flex; align-items:center; gap:8px;}
+  .mat-label small{font-weight:500; color:var(--muted);}
+  .mat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
+  @media(max-width:560px){.mat-grid{grid-template-columns:1fr;}}
+  .mat-opt{position:relative; cursor:pointer; display:block;}
+  .mat-opt input{position:absolute; opacity:0; width:0; height:0;}
+  .mat-card{display:flex; align-items:center; gap:12px; padding:12px 14px;
+    border:1.5px solid var(--line); border-radius:13px; background:#f8fafc; transition:.18s;}
+  .mat-opt:hover .mat-card{border-color:#fca5a5; background:#fffbfb;}
+  .mat-opt input:checked + .mat-card{border-color:var(--merah); background:var(--merah-soft);
+    box-shadow:0 0 0 3px rgba(185,28,28,.1);}
+  .mat-num{flex:0 0 44px; height:38px; border-radius:9px; background:#fff; border:1px solid #fecaca;
+    display:grid; place-items:center; font-size:.7rem; font-weight:800; color:var(--merah); text-align:center; line-height:1.1;}
+  .mat-opt input:checked + .mat-card .mat-num{background:var(--merah); color:#fff; border-color:var(--merah);}
+  .mat-info{flex:1; min-width:0;}
+  .mat-title{font-size:.88rem; font-weight:700; color:#1e293b; line-height:1.3;}
+  .mat-desc{font-size:.74rem; color:var(--muted); margin-top:2px;}
+  .mat-check{color:var(--merah); font-weight:800; font-size:1.1rem; opacity:0; transition:.18s;}
+  .mat-opt input:checked + .mat-card .mat-check{opacity:1;}
+
+  button{font-family:inherit; cursor:pointer; border:none; transition:.18s;}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px 26px; border-radius:13px; font-size:.98rem; font-weight:700;
+    background:var(--merah); color:#fff; box-shadow:0 6px 16px -8px rgba(185,28,28,.9);}
+  .btn:hover{background:var(--merah-dark); transform:translateY(-1px);}
+  .btn:disabled{opacity:.6; cursor:not-allowed; transform:none;}
+  .btn.ghost{background:#fff; color:var(--merah); border:1.5px solid #fecaca; box-shadow:none;}
+  .btn.ghost:hover{background:var(--merah-soft);}
+  .btn.full{width:100%;}
+
+  .progress-bar{position:sticky; top:0; z-index:20; background:rgba(241,245,249,.94);
+    backdrop-filter:blur(8px); padding:10px 0 12px; margin-bottom:16px; border-bottom:1px solid var(--line);}
+  .progress-inner{max-width:920px; margin:0 auto; padding:0 16px;}
+  .progress-top{display:flex; justify-content:space-between; font-size:.8rem; font-weight:600;
+    color:var(--muted); margin-bottom:6px;}
+  .track{height:9px; background:#e2e8f0; border-radius:999px; overflow:hidden;}
+  .fill{height:100%; width:0%; background:linear-gradient(90deg,var(--merah),#f97316);
+    border-radius:999px; transition:width .3s ease;}
+
+  .q{padding:14px 0; border-top:1px dashed var(--line);}
+  .q:first-of-type{border-top:none;}
+  .qtext{display:flex; gap:11px; margin:0 0 12px; font-weight:600; font-size:.97rem;}
+  .num{flex:0 0 28px; height:26px; border-radius:8px; background:var(--merah-soft);
+    color:var(--merah); font-size:.76rem; font-weight:800; display:grid; place-items:center;
+    border:1px solid #fecaca; margin-top:2px;}
+  .opts{display:grid; gap:8px; padding-left:39px;}
+  @media(max-width:520px){.opts{padding-left:0;}}
+  .opt{display:flex; align-items:flex-start; gap:10px; padding:10px 13px;
+    border:1.5px solid var(--line); border-radius:12px; cursor:pointer;
+    font-size:.93rem; background:#fff; transition:.15s;}
+  .opt:hover{border-color:#fca5a5; background:#fffbfb;}
+  .opt input{position:absolute; opacity:0; width:0; height:0;}
+  .dot{flex:0 0 18px; height:18px; border-radius:50%; border:2px solid #cbd5e1;
+    margin-top:3px; position:relative; transition:.15s;}
+  .opt.selected{border-color:var(--merah); background:var(--merah-soft);}
+  .opt.selected .dot{border-color:var(--merah);}
+  .opt.selected .dot::after{content:""; position:absolute; inset:3px; border-radius:50%; background:var(--merah);}
+  .opt.selected .txt{font-weight:600; color:var(--merah-dark);}
+  textarea{width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:12px;
+    font-family:inherit; font-size:.93rem; background:#f8fafc; resize:vertical; min-height:84px;
+    transition:.18s; line-height:1.6;}
+  textarea:focus{outline:none; border-color:var(--merah); background:#fff; box-shadow:0 0 0 3px rgba(185,28,28,.1);}
+  .essay-wrap{padding-left:39px;}
+  @media(max-width:520px){.essay-wrap{padding-left:0;}}
+  body.disable-select{user-select:none; -webkit-user-select:none; -ms-user-select:none;}
+
+  .result-head{text-align:center; padding:30px 22px;}
+  .result-head h2{margin:0 0 4px; color:var(--merah-dark);}
+  .who{color:var(--muted); font-size:.9rem; margin:0 0 20px;}
+  .ring{width:158px; height:158px; border-radius:50%; margin:0 auto 16px;
+    display:grid; place-items:center;
+    background:conic-gradient(var(--merah) calc(var(--p) * 1%), #e2e8f0 0);}
+  .ring-inner{width:126px; height:126px; border-radius:50%; background:#fff;
+    display:grid; place-items:center; align-content:center; box-shadow:inset 0 0 0 1px var(--line);}
+  .ring-inner .big{font-size:2.1rem; font-weight:800; color:var(--merah-dark); line-height:1;}
+  .ring-inner .small{font-size:.75rem; color:var(--muted); font-weight:600; margin-top:3px;}
+  .predikat{display:inline-block; padding:6px 18px; border-radius:999px; font-weight:700;
+    font-size:.9rem; margin-bottom:8px;}
+  .predikat.a{background:var(--green-soft); color:var(--green); border:1px solid #bbf7d0;}
+  .predikat.b{background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe;}
+  .predikat.c{background:#fffbeb; color:#b45309; border:1px solid #fde68a;}
+  .predikat.d{background:var(--red-soft); color:var(--red); border:1px solid #fecaca;}
+  .summary{color:var(--muted); font-size:.9rem; margin:6px 0 0;}
+  .cheat-bad{display:inline-block; margin-top:12px; padding:6px 14px; border-radius:999px;
+    background:var(--red-soft); color:var(--red); font-size:.82rem; font-weight:700; border:1px solid #fecaca;}
+  .cheat-good{display:inline-block; margin-top:12px; padding:6px 14px; border-radius:999px;
+    background:var(--green-soft); color:var(--green); font-size:.82rem; font-weight:700; border:1px solid #bbf7d0;}
+  .auto-note{display:block; margin-top:10px; font-size:.82rem; color:var(--red); font-weight:600;}
+
+  .bars{margin-top:6px;}
+  .bar-row{display:grid; grid-template-columns:64px 1fr 64px; align-items:center; gap:10px;
+    margin-bottom:9px; font-size:.85rem;}
+  .bar-row span:first-child{font-weight:700; color:var(--merah-dark);}
+  .bar-row span:last-child{text-align:right; color:var(--muted); font-weight:600;}
+  .bar{height:9px; background:#e2e8f0; border-radius:999px; overflow:hidden;}
+  .bar i{display:block; height:100%; background:linear-gradient(90deg,var(--merah),#f97316); border-radius:999px;}
+
+  .rev-group{border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden;}
+  .rev-group summary{cursor:pointer; padding:12px 15px; font-weight:700; color:var(--merah-dark);
+    background:#f8fafc; font-size:.9rem; list-style:none; display:flex; align-items:center; gap:8px;}
+  .rev-group summary::-webkit-details-marker{display:none;}
+  .rev-group summary::before{content:"▸"; display:inline-block; transition:.2s; color:var(--merah);}
+  .rev-group[open] summary::before{transform:rotate(90deg);}
+  .rev-group[open] summary{background:var(--merah-soft); border-bottom:1px solid var(--line);}
+  .rev-body{padding:8px 12px 12px;}
+
+  .rev{padding:13px 15px; border-radius:12px; margin-bottom:11px; border:1px solid var(--line); background:#fff;}
+  .rev.ok{border-color:#bbf7d0; background:var(--green-soft);}
+  .rev.no{border-color:#fecaca; background:var(--red-soft);}
+  .rev .tag{font-size:.72rem; font-weight:800; letter-spacing:.5px; text-transform:uppercase;}
+  .rev.ok .tag{color:var(--green);}
+  .rev.no .tag{color:var(--red);}
+  .rev p{margin:5px 0 0; font-size:.9rem;}
+  .rev .ans b{color:var(--merah-dark);}
+  .rev .exp{color:#475569; font-size:.86rem; background:rgba(255,255,255,.7);
+    padding:8px 10px; border-radius:9px; margin-top:9px;}
+  .rev .txt-ans{background:#fff; padding:8px 10px; border-radius:9px; border:1px dashed #cbd5e1;
+    font-size:.88rem; white-space:pre-wrap;}
+
+  .email-card{text-align:center; padding:24px 22px; background:linear-gradient(135deg,#eff6ff,#f8fafc);
+    border:1.5px solid #bfdbfe; border-radius:18px; margin-bottom:20px;}
+  .email-icon{font-size:2.4rem; margin-bottom:6px;}
+  .email-card h3{margin:0 0 4px; color:var(--merah-dark); font-size:1.05rem;}
+  .email-card p{margin:0 0 14px; color:var(--muted); font-size:.88rem;}
+  .email-card p b{color:var(--merah-dark);}
+  .email-status{margin-top:12px; font-size:.88rem; min-height:24px;}
+  .email-status .fail{color:var(--red);}
+  .email-status .ok{color:var(--green);}
+  .email-note{font-size:.76rem; color:var(--muted); margin-top:10px !important;}
+
+  .actions{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:22px;}
+  footer.foot{text-align:center; color:var(--muted); font-size:.78rem; padding:10px 0 0; line-height:1.7;}
+
+  .warn-overlay{position:fixed; inset:0; z-index:9999;
+    background:rgba(15,23,42,.85); backdrop-filter:blur(6px);
+    display:none; place-items:center; padding:20px; animation:fadeIn .2s ease;}
+  .warn-overlay.show{display:grid;}
+  .warn-box{background:#fff; border-radius:18px; padding:28px 24px; max-width:420px; width:100%;
+    text-align:center; box-shadow:0 20px 60px -20px rgba(0,0,0,.5);
+    animation:popIn .3s ease; border-top:5px solid var(--red);}
+  .warn-icon{font-size:3rem; margin-bottom:8px; line-height:1;}
+  .warn-box h2{margin:0 0 8px; color:var(--red); font-size:1.2rem;}
+  .warn-box p{margin:0 0 10px; font-size:.92rem; color:#334155;}
+  .warn-count{background:var(--red-soft); color:var(--red); border:1px solid #fecaca;
+    padding:8px 16px; border-radius:11px; font-size:.9rem; margin:8px 0 14px; display:inline-block;}
+  .warn-count b{font-size:1.15rem;}
+  .warn-sub{font-size:.82rem !important; color:var(--muted) !important;}
+  .warn-box .btn{margin-top:6px;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes popIn{from{transform:scale(.9); opacity:0;}to{transform:scale(1); opacity:1;}}
+
+  .toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
+    background:#1e293b; color:#fff; padding:12px 22px; border-radius:12px;
+    font-size:.88rem; font-weight:500; z-index:10000; opacity:0;
+    transition:all .3s ease; pointer-events:none; max-width:90vw; text-align:center;
+    box-shadow:0 10px 30px -10px rgba(0,0,0,.5);}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  @media print{
+    body{background:#fff;} .no-print{display:none !important;}
+    .card{box-shadow:none; break-inside:avoid; border-color:#cbd5e1;}
+    header.top{box-shadow:none; border-radius:0;}
+    .warn-overlay,.toast{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="star">⭐</div>
+  <h1>Tugas Online Pendidikan Pancasila</h1>
+  <p>Kelas VII · Sekolah Rakyat Terintegrasi 39 Garut</p>
+</header>
+
+<div class="wrap">
+
+  <section id="startScreen">
+    <div class="card intro">
+      <div class="card-head"><span class="badge">Petunjuk</span><h2>Sebelum Mengerjakan</h2></div>
+      <p>Pilih materi yang ingin dikerjakan. Setiap bab menampilkan <b>20 pilihan ganda (dipilih acak dari bank 30 soal)</b> + <b>3 uraian (dipilih acak dari bank 5 soal)</b> dengan total nilai <b>100 poin</b>.</p>
+      <p>🎲 <b>Soal dan pilihan jawaban diacak</b> setiap sesi, sehingga setiap siswa mendapat urutan berbeda.</p>
+      <p>⚠️ <b>Perhatian:</b> Jangan berpindah tab, klik kanan, atau menyalin teks selama mengerjakan. Setiap pelanggaran dicatat — jika mencapai <b>3 kali</b>, tugas otomatis dikumpulkan.</p>
+      <p>📧 Hasil tugas akan dikirim otomatis ke email guru: <b>fauzifaturohman@gmail.com</b></p>
+
+      <div class="field" style="margin-top:16px">
+        <label for="inName">Nama Lengkap</label>
+        <input id="inName" type="text" placeholder="Contoh: Siti Nurhaliza" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="inClass">Kelas</label>
+        <input id="inClass" type="text" placeholder="Contoh: VII A" autocomplete="off">
+      </div>
+
+      <div class="mat-label">📚 Pilih Materi <small>(soal &amp; nilai menyesuaikan)</small></div>
+      <div class="mat-grid" id="matGrid">
+        <label class="mat-opt">
+          <input type="radio" name="materi" value="1">
+          <div class="mat-card">
+            <span class="mat-num">Bab<br>1</span>
+            <div class="mat-info">
+              <div class="mat-title">Sejarah Kelahiran Pancasila</div>
+              <div class="mat-desc">20 PG + 3 uraian · 100 poin</div>
+            </div>
+            <span class="mat-check">✓</span>
+          </div>
+        </label>
+        <label class="mat-opt">
+          <input type="radio" name="materi" value="2">
+          <div class="mat-card">
+            <span class="mat-num">Bab<br>2</span>
+            <div class="mat-info">
+              <div class="mat-title">Penerapan Nilai-Nilai Pancasila</div>
+              <div class="mat-desc">20 PG + 3 uraian · 100 poin</div>
+            </div>
+            <span class="mat-check">✓</span>
+          </div>
+        </label>
+        <label class="mat-opt">
+          <input type="radio" name="materi" value="3">
+          <div class="mat-card">
+            <span class="mat-num">Bab<br>3</span>
+            <div class="mat-info">
+              <div class="mat-title">Patuh terhadap Norma</div>
+              <div class="mat-desc">20 PG + 3 uraian · 100 poin</div>
+            </div>
+            <span class="mat-check">✓</span>
+          </div>
+        </label>
+        <label class="mat-opt">
+          <input type="radio" name="materi" value="4">
+          <div class="mat-card">
+            <span class="mat-num">Bab<br>4</span>
+            <div class="mat-info">
+              <div class="mat-title">Keberagaman Bangsa Indonesia</div>
+              <div class="mat-desc">20 PG + 3 uraian · 100 poin</div>
+            </div>
+            <span class="mat-check">✓</span>
+          </div>
+        </label>
+        <label class="mat-opt">
+          <input type="radio" name="materi" value="5">
+          <div class="mat-card">
+            <span class="mat-num">Bab<br>5</span>
+            <div class="mat-info">
+              <div class="mat-title">Wilayah NKRI</div>
+              <div class="mat-desc">20 PG + 3 uraian · 100 poin</div>
+            </div>
+            <span class="mat-check">✓</span>
+          </div>
+        </label>
+        <label class="mat-opt">
+          <input type="radio" name="materi" value="all" checked>
+          <div class="mat-card">
+            <span class="mat-num">ALL</span>
+            <div class="mat-info">
+              <div class="mat-title">Semua Bab (Ujian Lengkap)</div>
+              <div class="mat-desc">100 PG + 15 uraian · 100 poin</div>
+            </div>
+            <span class="mat-check">✓</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="err" id="errMsg">⚠️ Nama dan kelas wajib diisi sebelum memulai.</div>
+      <button class="btn full" id="btnStart" style="margin-top:6px">🚀 Mulai Mengerjakan</button>
+    </div>
+  </section>
+
+  <section id="quizScreen" style="display:none">
+    <div class="progress-bar no-print">
+      <div class="progress-inner">
+        <div class="progress-top">
+          <span id="progText">Terjawab 0 / 0</span>
+          <span id="progPct">0%</span>
+        </div>
+        <div class="track"><div class="fill" id="progFill"></div></div>
+      </div>
+    </div>
+    <div id="quizBody"></div>
+    <div class="card no-print" style="text-align:center">
+      <p style="margin:0 0 14px; font-size:.9rem; color:var(--muted)">
+        Periksa kembali jawabanmu sebelum mengumpulkan.
+      </p>
+      <button class="btn" id="btnSubmit">✅ Kumpulkan Jawaban</button>
+    </div>
+  </section>
+
+  <section id="resultScreen" style="display:none"></section>
+
+  <footer class="foot">
+    Sumber materi: Buku Siswa Pendidikan Pancasila SMP/MTs Kelas VII (Kemendikbudristek, 2023)<br>
+    Rangkuman oleh Fauzi Faturohman · Sekolah Rakyat Terintegrasi 39 Garut
+  </footer>
+</div>
+
+<div class="warn-overlay" id="warnOverlay">
+  <div class="warn-box">
+    <div class="warn-icon" id="warnIcon">⚠️</div>
+    <h2 id="warnTitle">Jangan Mencoba Mencontek!</h2>
+    <p id="warnMsg">Terdeteksi aktivitas mencurigakan.</p>
+    <div class="warn-count">Peringatan <b><span id="warnNum">1</span> / 3</b></div>
+    <p class="warn-sub" id="warnSub">Jika mencapai 3 kali, tugas akan otomatis dikumpulkan dengan nilai saat ini.</p>
+    <button class="btn full" id="warnClose">Saya Mengerti, Kembali Mengerjakan</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   KONSTANTA
+   ========================================================= */
+const TEACHER_EMAIL = "fauzifaturohman@gmail.com";
+const MAX_CHEAT = 3;
+const POIN_MC_TOTAL = 80;
+const POIN_ESSAY_TOTAL = 20;
+const PICK_MC_PER_BAB = 20;
+const PICK_ESSAY_PER_BAB = 3;
+
+const BAB_TITLE = {
+  1:"Sejarah Kelahiran Pancasila",
+  2:"Penerapan Nilai-Nilai Pancasila",
+  3:"Patuh terhadap Norma",
+  4:"Keberagaman Bangsa Indonesia dalam Bingkai Bhinneka Tunggal Ika",
+  5:"Wilayah Negara Kesatuan Republik Indonesia"
+};
+
+/* =========================================================
+   BANK SOAL — 30 PILIHAN GANDA PER BAB (150 total)
+   ========================================================= */
+const MC = [
+  /* ============ BAB 1 ============ */
+  {bab:1, q:"Hari Lahir Pancasila diperingati setiap tanggal ....", opts:["17 Agustus","1 Juni","22 Juni","18 Agustus"], a:1, e:"Keppres No. 24 Tahun 2016 menetapkan 1 Juni sebagai Hari Lahir Pancasila (pidato Ir. Sukarno di sidang BPUPK)."},
+  {bab:1, q:"Urutan proses lahirnya Pancasila yang benar adalah ....", opts:["PPKI → BPUPK → Panitia Sembilan","Panitia Sembilan → PPKI → BPUPK","BPUPK → Panitia Sembilan → PPKI","BPUPK → PPKI → Panitia Sembilan"], a:2, e:"BPUPK (29 Mei–1 Juni 1945) → Panitia Sembilan (22 Juni 1945) → PPKI (18 Agustus 1945)."},
+  {bab:1, q:"Badan yang bertugas menyelidiki dan menyiapkan hal-hal untuk kemerdekaan Indonesia adalah ....", opts:["PPKI","BPUPK","Panitia Sembilan","KNIP"], a:1, e:"BPUPK = Badan Penyelidik Usaha Persiapan Kemerdekaan Indonesia."},
+  {bab:1, q:"Ketua BPUPK adalah ....", opts:["Ir. Sukarno","Drs. Mohammad Hatta","dr. K.R.T. Radjiman Wedyodiningrat","Mr. Muhammad Yamin"], a:2, e:"BPUPK diketuai dr. K.R.T. Radjiman Wedyodiningrat."},
+  {bab:1, q:"Sidang pertama BPUPK (29 Mei–1 Juni 1945) membahas ....", opts:["rancangan UUD","dasar negara","bentuk negara","wilayah negara"], a:1, e:"Sidang pertama membahas dasar negara."},
+  {bab:1, q:"Sidang kedua BPUPK (10–17 Juli 1945) membahas ....", opts:["rancangan UUD","dasar negara","bentuk negara","wilayah negara"], a:0, e:"Sidang kedua membahas rancangan UUD."},
+  {bab:1, q:"Gedung tempat sidang BPUPK sekarang dikenal sebagai ....", opts:["Gedung Merdeka","Gedung Pancasila","Gedung Joang 45","Istana Negara"], a:1, e:"Terletak di Jalan Pejambon No. 6, Jakarta."},
+  {bab:1, q:"Pada 1 Juni 1945, Ir. Sukarno berpidato menyampaikan lima prinsip, yaitu ....", opts:["Kebangsaan, Internasionalisme, Mufakat, Kesejahteraan Sosial, Ketuhanan","Kebangsaan, Kemanusiaan, Persatuan, Kerakyatan, Keadilan","Persatuan, Kekeluargaan, Keseimbangan, Musyawarah, Keadilan Sosial","Ketuhanan, Kemanusiaan, Persatuan, Demokrasi, Keadilan"], a:0, e:"Lima prinsip pidato Sukarno: Kebangsaan, Internasionalisme, Mufakat, Kesejahteraan Sosial, dan Ketuhanan."},
+  {bab:1, q:"Panitia kecil yang awalnya 8 orang diubah menjadi 9 orang sehingga disebut ....", opts:["Panitia Sembilan","Panitia Kecil","Panitia Perumus","Panitia Delapan"], a:0, e:"Panitia kecil 8 orang diubah menjadi 9 orang sehingga disebut Panitia Sembilan."},
+  {bab:1, q:"Ketua Panitia Sembilan adalah ....", opts:["Drs. Moh. Hatta","Ir. Sukarno","Mr. Achmad Soebardjo","K.H. Wachid Hasyim"], a:1, e:"Ir. Sukarno menjadi ketua sekaligus penengah antara golongan nasionalis dan Islam."},
+  {bab:1, q:"Piagam Jakarta disusun pada tanggal ....", opts:["1 Juni 1945","22 Juni 1945","7 Agustus 1945","18 Agustus 1945"], a:1, e:"Piagam Jakarta disusun 22 Juni 1945."},
+  {bab:1, q:"Piagam Jakarta disusun di rumah ....", opts:["Laksamana Maeda","Bung Karno","Bung Hatta","Mr. Achmad Soebardjo"], a:1, e:"Di rumah Bung Karno, Jalan Pegangsaan Timur No. 56."},
+  {bab:1, q:"Bunyi sila pertama dalam rumusan Piagam Jakarta adalah ....", opts:["Ketuhanan Yang Maha Esa","Ketuhanan dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya","Ketuhanan Yang Maha Kuasa","Ketuhanan yang berkebudayaan"], a:1, e:"Rumusan awal sila pertama dalam Piagam Jakarta masih menyebut kewajiban menjalankan syariat Islam bagi pemeluknya."},
+  {bab:1, q:"Ketua PPKI adalah ....", opts:["Ir. Sukarno","Drs. Mohammad Hatta","dr. Radjiman Wedyodiningrat","Mr. Muhammad Yamin"], a:0, e:"PPKI diketuai Ir. Sukarno, wakilnya Drs. Mohammad Hatta."},
+  {bab:1, q:"Jumlah anggota PPKI adalah ....", opts:["9 orang","21 orang","38 orang","62 orang"], a:1, e:"PPKI beranggotakan 21 orang, semuanya orang Indonesia."},
+  {bab:1, q:"Peristiwa Rengasdengklok terjadi pada tanggal ....", opts:["14 Agustus 1945","15 Agustus 1945","16 Agustus 1945","17 Agustus 1945"], a:2, e:"Peristiwa Rengasdengklok terjadi 16 Agustus 1945."},
+  {bab:1, q:"Tokoh pemuda yang membawa Sukarno dan Hatta ke Rengasdengklok adalah ....", opts:["Sukarni, Wikana, dan Chaerul Saleh","Sayuti Melik, Latief Hendradiningrat, dan Suhud","Achmad Soebardjo, Wikana, dan Sukarni","Ki Bagus Hadikusumo, Wahid Hasyim, dan Kasman Singodimedjo"], a:0, e:"Sukarni, Wikana, dan Chaerul Saleh membawa Sukarno-Hatta ke Rengasdengklok."},
+  {bab:1, q:"Naskah proklamasi diketik oleh ....", opts:["Sayuti Melik","Sukarni","Latief Hendradiningrat","Fatmawati"], a:0, e:"Naskah proklamasi diketik oleh Sayuti Melik."},
+  {bab:1, q:"Bendera Merah Putih untuk proklamasi dijahit oleh ....", opts:["Fatmawati","Sayuti Melik","Suhud","Latief Hendradiningrat"], a:0, e:"Bendera Merah Putih dijahit oleh Fatmawati."},
+  {bab:1, q:"Rumusan akhir Pancasila tertulis dalam ....", opts:["Pembukaan UUD 1945 alinea pertama","Pembukaan UUD 1945 alinea keempat","Batang tubuh UUD 1945 Pasal 1","Piagam Jakarta"], a:1, e:"Rumusan akhir Pancasila tertulis dalam Pembukaan UUD 1945 alinea keempat."},
+  {bab:1, q:"Lama penjajahan Belanda di Indonesia sekitar ....", opts:["35 tahun","100 tahun","350 tahun","3.500 tahun"], a:2, e:"Belanda menjajah Indonesia sekitar 350 tahun."},
+  {bab:1, q:"Lama penjajahan Jepang di Indonesia sekitar ....", opts:["3,5 tahun","35 tahun","10 tahun","100 tahun"], a:0, e:"Jepang menjajah Indonesia sekitar 3,5 tahun (mulai 1942)."},
+  {bab:1, q:"Kota Jepang yang dijatuhi bom atom pada 6 Agustus 1945 adalah ....", opts:["Tokyo","Hiroshima","Nagasaki","Osaka"], a:1, e:"Hiroshima (6 Agustus) dan Nagasaki (9 Agustus 1945) dijatuhi bom atom."},
+  {bab:1, q:"Kota Jepang yang dijatuhi bom atom pada 9 Agustus 1945 adalah ....", opts:["Tokyo","Hiroshima","Nagasaki","Osaka"], a:2, e:"Nagasaki dijatuhi bom atom pada 9 Agustus 1945."},
+  {bab:1, q:"Tokoh yang mendiktekan teks proklamasi adalah ....", opts:["Ir. Sukarno","Drs. Mohammad Hatta","Sayuti Melik","Achmad Soebardjo"], a:1, e:"Hatta mendiktekan, Sukarno menulis teks proklamasi."},
+  {bab:1, q:"Pengibar bendera Merah Putih pada proklamasi 17 Agustus 1945 adalah ....", opts:["Sukarno dan Hatta","Sayuti Melik dan Fatmawati","Latief Hendradiningrat dan Suhud","Sukarni dan Wikana"], a:2, e:"Bendera dikibarkan oleh Latief Hendradiningrat dan Suhud."},
+  {bab:1, q:"Proklamasi Kemerdekaan Indonesia dibacakan pada ....", opts:["Jumat, 17 Agustus 1945 pukul 10.00 WIB","Kamis, 16 Agustus 1945 pukul 08.00 WIB","Sabtu, 18 Agustus 1945 pukul 10.00 WIB","Minggu, 17 Agustus 1945 pukul 09.00 WIB"], a:0, e:"Jumat, 17 Agustus 1945 pukul 10.00 WIB di Jalan Pegangsaan Timur No. 56."},
+  {bab:1, q:"Keputusan Presiden yang menetapkan Hari Lahir Pancasila adalah ....", opts:["Keppres No. 24 Tahun 2016","Keppres No. 24 Tahun 1945","Keppres No. 1 Tahun 2016","Keppres No. 45 Tahun 2016"], a:0, e:"Keppres No. 24 Tahun 2016 menetapkan 1 Juni sebagai Hari Lahir Pancasila."},
+  {bab:1, q:"Berikut yang BUKAN makna proklamasi kemerdekaan adalah ....", opts:["Masa penjajahan berakhir","Bangsa Indonesia bebas menentukan nasibnya sendiri","Hukum penjajah berakhir, berlaku hukum nasional","Indonesia menjadi anggota PBB"], a:3, e:"Menjadi anggota PBB bukan bagian dari makna proklamasi menurut rangkuman."},
+  {bab:1, q:"Anggota Panitia Sembilan yang mewakili golongan Islam adalah ....", opts:["Mr. Achmad Soebardjo","K.H. Wachid Hasyim","Mr. A.A. Maramis","Ir. Sukarno"], a:1, e:"Panitia Sembilan mewakili golongan nasionalis dan Islam; K.H. Wachid Hasyim salah satu wakil golongan Islam."},
+
+  /* ============ BAB 2 ============ */
+  {bab:2, q:"Kata “Pancasila” berasal dari bahasa Sanskerta. Arti “panca” adalah ....", opts:["lima","dasar","aturan","tujuan"], a:0, e:"Panca = lima, sila = dasar. Pancasila berarti lima dasar."},
+  {bab:2, q:"Arti kata “sila” adalah ....", opts:["lima","dasar","aturan","tujuan"], a:1, e:"Sila = dasar."},
+  {bab:2, q:"Lambang Garuda Pancasila dirancang oleh ....", opts:["Sultan Hamid II","Ir. Sukarno","Ki Hajar Dewantara","Mr. Muhammad Yamin"], a:0, e:"Lambang Garuda Pancasila dirancang Sultan Hamid II."},
+  {bab:2, q:"Lambang sila pertama, Ketuhanan Yang Maha Esa, adalah ....", opts:["bintang","rantai","pohon beringin","kepala banteng"], a:0, e:"Sila 1 = Bintang."},
+  {bab:2, q:"Lambang sila kedua, Kemanusiaan yang Adil dan Beradab, adalah ....", opts:["bintang","rantai","pohon beringin","kepala banteng"], a:1, e:"Sila 2 = Rantai."},
+  {bab:2, q:"Lambang sila ketiga, Persatuan Indonesia, adalah ....", opts:["bintang","rantai","pohon beringin","kepala banteng"], a:2, e:"Sila 3 = Pohon Beringin."},
+  {bab:2, q:"Lambang sila keempat, Kerakyatan, adalah ....", opts:["bintang","rantai","pohon beringin","kepala banteng"], a:3, e:"Sila 4 = Kepala Banteng."},
+  {bab:2, q:"Lambang sila kelima, Keadilan Sosial, adalah ....", opts:["padi dan kapas","bintang","rantai","kepala banteng"], a:0, e:"Sila 5 = Padi dan Kapas."},
+  {bab:2, q:"Beribadah dengan tertib dan tidak memaksakan agama kepada orang lain merupakan pengamalan sila ke- ....", opts:["1","2","3","4"], a:0, e:"Sila ke-1: Ketuhanan Yang Maha Esa."},
+  {bab:2, q:"Menjadi relawan kemanusiaan dan menganggap semua orang sederajat merupakan pengamalan sila ke- ....", opts:["1","2","3","4"], a:1, e:"Sila ke-2: Kemanusiaan yang Adil dan Beradab."},
+  {bab:2, q:"Berteman tanpa membeda-bedakan suku, agama, dan ras merupakan pengamalan sila ke- ....", opts:["1","2","3","5"], a:2, e:"Sila ke-3: Persatuan Indonesia."},
+  {bab:2, q:"Memilih ketua kelas dengan cara musyawarah merupakan pengamalan sila ke- ....", opts:["1","2","4","5"], a:2, e:"Sila ke-4: Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan."},
+  {bab:2, q:"Antre, gotong royong, dan menolong yang kesulitan merupakan pengamalan sila ke- ....", opts:["1","2","3","5"], a:3, e:"Sila ke-5: Keadilan Sosial bagi Seluruh Rakyat Indonesia."},
+  {bab:2, q:"Asas pemilu di Indonesia adalah ....", opts:["LUBER dan JURDIL","LUBER dan PANCASILA","JURDIL dan GOTONG ROYONG","BEBAS dan RAHASIA saja"], a:0, e:"LUBER (Langsung, Umum, Bebas, Rahasia) dan JURDIL (Jujur dan Adil)."},
+  {bab:2, q:"Arti “beradab” dalam sila kedua adalah ....", opts:["tidak memihak dan benar secara moral","bertindak sesuai nilai dan budaya yang berlaku","memperlakukan semua orang sama rata","mengutamakan kepentingan pribadi"], a:1, e:"Beradab = bertindak sesuai nilai dan budaya yang berlaku."},
+  {bab:2, q:"Manfaat Pancasila sebagai sumber hukum adalah ....", opts:["sebagai panduan mengambil keputusan","semua peraturan tidak boleh bertentangan dengan nilai Pancasila","menjadi tujuan yang ingin dicapai bersama","menjadi identitas bangsa"], a:1, e:"Sebagai sumber hukum: semua peraturan tidak boleh bertentangan dengan nilai Pancasila."},
+  {bab:2, q:"Hari Kesaktian Pancasila diperingati setiap tanggal ....", opts:["1 Juni","1 Oktober","17 Agustus","28 Oktober"], a:1, e:"1 Oktober = Hari Kesaktian Pancasila (mengenang peristiwa Gerakan 30 September)."},
+  {bab:2, q:"Hari Lahir Pancasila diperingati setiap tanggal ....", opts:["1 Juni","1 Oktober","17 Agustus","22 Juni"], a:0, e:"1 Juni = Hari Lahir Pancasila."},
+  {bab:2, q:"Teladan yang dicontohkan Ir. Sukarno dan Drs. Mohammad Hatta sebagai pendiri bangsa adalah ....", opts:["mengutamakan musyawarah, rela berkorban, mengutamakan persatuan, dan bekerja tanpa pamrih","mengutamakan kepentingan pribadi dan golongan","memaksakan kehendak kepada rakyat","menghindari musyawarah"], a:0, e:"Sukarno dan Hatta mengutamakan musyawarah, rela berkorban, mengutamakan persatuan, dan bekerja tanpa pamrih."},
+  {bab:2, q:"Asas JURDIL dalam pemilu berarti ....", opts:["Jujur dan Adil","Jujur dan Disiplin","Jujur dan Demokratis","Jujur dan Langsung"], a:0, e:"JURDIL = Jujur dan Adil."},
+  {bab:2, q:"Pancasila sebagai dasar negara tertulis dalam ....", opts:["Pembukaan UUD 1945","Batang tubuh UUD 1945","Piagam Jakarta","Tap MPR"], a:0, e:"Kelima sila tertulis dalam Pembukaan UUD 1945 dan saling berkaitan sebagai satu kesatuan."},
+  {bab:2, q:"Arti “adil” dalam sila kedua adalah ....", opts:["tidak memihak dan benar secara moral","bertindak sesuai budaya","mengutamakan kepentingan pribadi","memperlakukan orang secara berbeda"], a:0, e:"Adil = tidak memihak dan benar secara moral."},
+  {bab:2, q:"Manfaat Pancasila sebagai pedoman hidup adalah ....", opts:["panduan untuk mengambil keputusan dan memecahkan masalah","semua peraturan tidak boleh bertentangan","menjadi cita-cita bangsa","menjadi identitas bangsa"], a:0, e:"Sebagai pedoman hidup: panduan mengambil keputusan dan memecahkan masalah."},
+  {bab:2, q:"Manfaat Pancasila sebagai cita-cita bangsa adalah ....", opts:["panduan mengambil keputusan","sumber semua peraturan","tujuan yang ingin dicapai bersama, yaitu hidup adil dan sejahtera","identitas yang membedakan dari bangsa lain"], a:2, e:"Sebagai cita-cita bangsa: tujuan hidup adil dan sejahtera."},
+  {bab:2, q:"Manfaat Pancasila sebagai kepribadian bangsa adalah ....", opts:["panduan mengambil keputusan","sumber semua peraturan","tujuan hidup adil dan sejahtera","identitas yang membedakan kita dari bangsa lain"], a:3, e:"Sebagai kepribadian bangsa: identitas yang membedakan kita dari bangsa lain."},
+  {bab:2, q:"Kepanjangan asas LUBER dalam pemilu adalah ....", opts:["Langsung, Umum, Bebas, Rahasia","Luas, Umum, Bebas, Rahasia","Langsung, Umum, Bersih, Rahasia","Langsung, Universal, Bebas, Rahasia"], a:0, e:"LUBER = Langsung, Umum, Bebas, Rahasia."},
+  {bab:2, q:"Pita yang dicengkeram kaki Garuda Pancasila bertuliskan ....", opts:["Bhinneka Tunggal Ika","Tut Wuri Handayani","Pancasila","Indonesia Raya"], a:0, e:"Di bawah kaki garuda ada pita bertuliskan Bhinneka Tunggal Ika."},
+  {bab:2, q:"Sila ke-3 dalam kehidupan bernegara menekankan bahwa ....", opts:["negara menjamin kebebasan beragama","kepentingan bangsa dan negara ditempatkan di atas kepentingan pribadi dan golongan","keputusan musyawarah wajib dihormati","negara menjamin kesejahteraan rakyat"], a:1, e:"Sila 3: kepentingan bangsa dan negara di atas kepentingan pribadi dan golongan."},
+  {bab:2, q:"Bung Karno meminta tambahan pada kepala Garuda Pancasila berupa ....", opts:["mahkota","jambul","sayap tambahan","pita merah"], a:1, e:"Bung Karno meminta jambul ditambahkan di kepala garuda."},
+  {bab:2, q:"Sila ke-1 dalam kehidupan bernegara berarti negara ....", opts:["menjamin kebebasan beragama dan tidak memaksakan agama","menjunjung HAM dan kesederajatan manusia","menempatkan kepentingan bangsa di atas pribadi","menjamin kesejahteraan seluruh rakyat"], a:0, e:"Sila 1: negara menjamin kebebasan beragama dan tidak memaksakan agama."},
+  {bab:2, q:"“Hal kecil juga Pancasila.” Contoh sikap tersebut adalah ....", opts:["antre, musyawarah, gotong royong, menghargai teman yang berbeda agama","menghafal sila tanpa mempraktikkan","membaca buku tentang Pancasila saja","menuliskan sila di dinding kelas"], a:0, e:"Hal kecil yang mencerminkan Pancasila: antre, musyawarah, gotong royong, dan menghargai teman yang berbeda agama."},
+
+  /* ============ BAB 3 ============ */
+  {bab:3, q:"Tiga kata ajaib milik Ika adalah ....", opts:["tolong, terima kasih, maaf","tolong, maaf, permisi","terima kasih, maaf, permisi","tolong, terima kasih, salam"], a:0, e:"Tiga kata ajaib: tolong, terima kasih, dan maaf."},
+  {bab:3, q:"Manusia disebut makhluk monodualis karena ....", opts:["hanya mementingkan diri sendiri","memiliki dua sisi sekaligus, yaitu individu dan sosial","tidak membutuhkan bantuan orang lain","selalu melanggar aturan yang ada"], a:1, e:"Monodualis: manusia punya sisi individu dan sisi sosial sekaligus."},
+  {bab:3, q:"Contoh kebutuhan fisik manusia adalah ....", opts:["rasa bahagia","rasa aman","makan dan minum","rasa damai"], a:2, e:"Kebutuhan fisik: makan, minum, dan kebutuhan tubuh lainnya."},
+  {bab:3, q:"Contoh kebutuhan nonfisik manusia adalah ....", opts:["makan dan minum","pakaian dan tempat tinggal","rasa bahagia, aman, dan damai","udara dan air"], a:2, e:"Kebutuhan nonfisik: rasa bahagia, aman, dan damai."},
+  {bab:3, q:"Norma disebut juga ....", opts:["aturan atau kaidah","sanksi atau hukuman","perintah atau larangan","undang-undang"], a:0, e:"Norma disebut juga aturan atau kaidah."},
+  {bab:3, q:"Berikut yang BUKAN ciri norma adalah ....", opts:["ada perintah","ada larangan","ada sanksi","bersifat sukarela tanpa paksaan"], a:3, e:"Norma bersifat mengikat dan memaksa, wajib dipatuhi semua anggota kelompok."},
+  {bab:3, q:"Norma yang bersumber dari Tuhan Yang Maha Esa dan tertulis dalam kitab suci adalah norma ....", opts:["agama","kesusilaan","kesopanan","hukum"], a:0, e:"Norma agama bersumber dari Tuhan dan tertulis dalam kitab suci."},
+  {bab:3, q:"Sanksi bagi pelanggar norma agama adalah ....", opts:["penjara","dosa","rasa malu","ditegur"], a:1, e:"Sanksi norma agama adalah dosa."},
+  {bab:3, q:"Norma yang bersumber dari suara hati (hati nurani) adalah norma ....", opts:["agama","kesusilaan","kesopanan","hukum"], a:1, e:"Norma kesusilaan bersumber dari suara hati (hati nurani)."},
+  {bab:3, q:"Sanksi bagi pelanggar norma kesusilaan adalah ....", opts:["dosa","penjara","rasa bersalah, malu, dan menyesal","ditegur masyarakat"], a:2, e:"Sanksi norma kesusilaan: rasa bersalah, malu, takut, dan menyesal."},
+  {bab:3, q:"Norma yang bersumber dari kebiasaan masyarakat (tata krama) adalah norma ....", opts:["agama","kesusilaan","kesopanan","hukum"], a:2, e:"Norma kesopanan bersumber dari kebiasaan masyarakat (tata krama/etika)."},
+  {bab:3, q:"Sanksi bagi pelanggar norma kesopanan adalah ....", opts:["dosa","rasa bersalah","ditegur, dicemooh, atau dikucilkan","penjara"], a:2, e:"Sanksi norma kesopanan: ditegur, dicemooh, atau dikucilkan."},
+  {bab:3, q:"Norma yang sanksinya paling tegas karena tertulis dengan jelas adalah norma ....", opts:["agama","kesusilaan","kesopanan","hukum"], a:3, e:"Norma hukum paling tegas karena sanksinya tertulis jelas (penjara, denda)."},
+  {bab:3, q:"Undang-undang dibuat oleh ....", opts:["DPR bersama Presiden","kepala sekolah bersama wakil kepala sekolah","masyarakat bersama tokoh adat","guru bersama siswa"], a:0, e:"Undang-undang dibuat oleh DPR bersama Presiden."},
+  {bab:3, q:"Contoh norma adat dari Jawa adalah ....", opts:["Nyepi","selametan","Subak","Seren Taun"], a:1, e:"Selametan adalah contoh norma adat dari Jawa."},
+  {bab:3, q:"Hari Nyepi merupakan contoh norma adat dari ....", opts:["Jawa","Bali","Banten","Sunda"], a:1, e:"Hari Nyepi adalah kebiasaan masyarakat Bali."},
+  {bab:3, q:"Suku Baduy yang memiliki kebiasaan hidup khas terdapat di ....", opts:["Jawa Barat","Banten","Jawa Tengah","DKI Jakarta"], a:1, e:"Suku Baduy berada di Banten."},
+  {bab:3, q:"Pasal UUD 1945 yang mengakui dan menghormati masyarakat hukum adat adalah ....", opts:["Pasal 18B ayat (2)","Pasal 1 ayat (1)","Pasal 25A","Pasal 37 ayat (5)"], a:0, e:"Pasal 18B ayat (2) UUD 1945 mengakui dan menghormati masyarakat hukum adat."},
+  {bab:3, q:"Berikut yang BUKAN penyebab orang melanggar norma adalah ....", opts:["tidak bisa mengendalikan diri","sudah terbiasa melanggar","kesadaran tinggi akan aturan","tekanan lingkungan"], a:2, e:"Kesadaran yang rendah — bukan tinggi — menjadi penyebab pelanggaran."},
+  {bab:3, q:"Pelajaran utama dari kisah “R” yang menyebarkan kabar bohong di media sosial adalah ....", opts:["lebih baik tidak bersosialisasi","pikir dulu sebelum membagikan informasi","media sosial selalu berbahaya","jangan pernah menggunakan HP"], a:1, e:"Pikir dulu sebelum membagikan informasi."},
+  {bab:3, q:"Norma itu seperti peta di HP karena ....", opts:["menunjukkan arah supaya kita tidak tersesat","berisi hukuman bagi pelanggar","memaksa orang berbuat baik","menghibur pengguna"], a:0, e:"Norma seperti peta di HP: menunjukkan arah supaya kita tidak tersesat."},
+  {bab:3, q:"Berikut yang merupakan fungsi norma adalah ....", opts:["menciptakan ketertiban dan keamanan","memperbanyak konflik","mempermudah pelanggaran","menghapus hak dan kewajiban"], a:0, e:"Fungsi norma: menciptakan ketertiban dan keamanan."},
+  {bab:3, q:"Fungsi norma memberi sanksi kepada pelanggar bertujuan agar ....", opts:["pelanggar jera","pelanggar bangga","pelanggar mendapat hadiah","pelanggar dihormati"], a:0, e:"Sanksi diberikan agar pelanggar jera."},
+  {bab:3, q:"Fungsi norma dalam mengendalikan perilaku masyarakat adalah ....", opts:["menjaga perilaku agar sesuai aturan","membebaskan semua perilaku","memperbolehkan pelanggaran","menghapus semua sanksi"], a:0, e:"Norma mengendalikan perilaku masyarakat agar sesuai aturan."},
+  {bab:3, q:"Fungsi norma dalam menciptakan keadilan adalah ....", opts:["hak dan kewajiban terpenuhi sesuai porsinya","hak semua orang dihilangkan","kewajiban semua orang dihapus","sanksi tidak perlu ada"], a:0, e:"Keadilan tercipta karena hak dan kewajiban terpenuhi sesuai porsinya."},
+  {bab:3, q:"Sumber norma agama adalah ....", opts:["Tuhan Yang Maha Esa (kitab suci)","suara hati","kebiasaan masyarakat","lembaga resmi"], a:0, e:"Norma agama bersumber dari Tuhan Yang Maha Esa dan tertulis dalam kitab suci."},
+  {bab:3, q:"Sumber norma kesusilaan adalah ....", opts:["Tuhan Yang Maha Esa","suara hati (hati nurani)","kebiasaan masyarakat","lembaga resmi"], a:1, e:"Norma kesusilaan bersumber dari suara hati (hati nurani)."},
+  {bab:3, q:"Sumber norma kesopanan adalah ....", opts:["Tuhan Yang Maha Esa","suara hati","kebiasaan masyarakat (tata krama)","lembaga resmi"], a:2, e:"Norma kesopanan bersumber dari kebiasaan masyarakat (tata krama/etika)."},
+  {bab:3, q:"Sumber norma hukum adalah ....", opts:["Tuhan Yang Maha Esa","suara hati","kebiasaan masyarakat","lembaga resmi yang berwenang dan tertulis"], a:3, e:"Norma hukum bersumber dari lembaga resmi yang berwenang dan tertulis."},
+  {bab:3, q:"Tata tertib sekolah dibuat oleh ....", opts:["kepala sekolah bersama wakil kepala sekolah bidang kesiswaan dan komite sekolah","siswa bersama OSIS","guru bersama orang tua","kepala desa"], a:0, e:"Tata tertib sekolah dibuat oleh kepala sekolah bersama wakil kepala bidang kesiswaan dan komite sekolah."},
+
+  /* ============ BAB 4 ============ */
+  {bab:4, q:"Arti semboyan Bhinneka Tunggal Ika adalah ....", opts:["bersatu kita teguh","berbeda-beda tetapi tetap satu jua","persatuan tanpa perbedaan","kekuatan dalam kesatuan"], a:1, e:"Bhinneka Tunggal Ika = berbeda-beda tetapi tetap satu jua."},
+  {bab:4, q:"Semboyan Bhinneka Tunggal Ika tertulis pada ....", opts:["perisai Garuda Pancasila","pita yang dicengkeram kaki Garuda Pancasila","kepala Garuda Pancasila","ekor Garuda Pancasila"], a:1, e:"Tertulis pada pita yang dicengkeram kaki Garuda Pancasila."},
+  {bab:4, q:"SARA adalah singkatan dari ....", opts:["Suku, Agama, Ras, Antargolongan","Suku, Adat, Ras, Agama","Sosial, Agama, Ras, Adat","Suku, Agama, Ras, Adat"], a:0, e:"SARA = Suku, Agama, Ras, Antargolongan."},
+  {bab:4, q:"Menurut sensus BPS 2010, Indonesia memiliki suku bangsa lebih dari ....", opts:["300","700","1.300","3.000"], a:2, e:"BPS 2010 mencatat lebih dari 1.300 suku bangsa."},
+  {bab:4, q:"Suku bangsa terbesar di Indonesia menurut sensus BPS 2010 adalah suku ....", opts:["Jawa","Sunda","Batak","Minangkabau"], a:0, e:"Suku Jawa merupakan suku terbesar di Indonesia."},
+  {bab:4, q:"Persentase suku Jawa menurut sensus BPS 2010 adalah ....", opts:["15,50%","3,58%","40,22%","50,00%"], a:2, e:"Suku Jawa 40,22%."},
+  {bab:4, q:"Persentase suku Sunda menurut sensus BPS 2010 adalah ....", opts:["15,50%","3,58%","40,22%","20,00%"], a:0, e:"Suku Sunda 15,50%."},
+  {bab:4, q:"Upacara adat Seren Taun berasal dari daerah ....", opts:["Jawa","Bali","Sunda","Batak"], a:2, e:"Seren Taun adalah upacara adat dari tanah Sunda."},
+  {bab:4, q:"Rumah adat Badak Heuay berasal dari ....", opts:["Jawa","Sunda","Bali","Papua"], a:1, e:"Badak Heuay adalah rumah adat Sunda."},
+  {bab:4, q:"Makanan khas dari Garut adalah ....", opts:["colenak","dodol Garut","kerak telor","rendang"], a:1, e:"Dodol Garut adalah makanan khas dari Garut."},
+  {bab:4, q:"Alat musik kolintang terbuat dari ....", opts:["bambu","kayu","logam","kulit hewan"], a:1, e:"Kolintang terbuat dari kayu."},
+  {bab:4, q:"Sistem pertanian Subak merupakan kearifan lokal dari ....", opts:["Jawa","Bali","Sunda","Minangkabau"], a:1, e:"Subak adalah sistem pertanian khas Bali."},
+  {bab:4, q:"Kitab suci agama Hindu adalah ....", opts:["Tripitaka","Weda","Si Shu","Alkitab"], a:1, e:"Kitab suci Hindu = Weda."},
+  {bab:4, q:"Tempat ibadah umat Buddha adalah ....", opts:["masjid","gereja","pura","wihara"], a:3, e:"Tempat ibadah umat Buddha = wihara."},
+  {bab:4, q:"Hari raya umat Khonghucu adalah ....", opts:["Nyepi","Waisak","Imlek","Natal"], a:2, e:"Hari raya umat Khonghucu = Imlek."},
+  {bab:4, q:"Ras yang mendiami wilayah Papua, Maluku, dan NTT adalah ....", opts:["Malayan-Mongoloid","Melanesoid","Asiatic Mongoloid","Kaukasoid"], a:1, e:"Ras Melanesoid mendiami Papua, Maluku, dan NTT."},
+  {bab:4, q:"Ras keturunan Tionghoa, Jepang, dan Korea di Indonesia termasuk ....", opts:["Malayan-Mongoloid","Melanesoid","Asiatic Mongoloid","Kaukasoid"], a:2, e:"Asiatic Mongoloid: keturunan Tionghoa, Jepang, dan Korea."},
+  {bab:4, q:"Ras yang berasal dari India, Timur Tengah, Australia, Eropa, dan Amerika termasuk ....", opts:["Malayan-Mongoloid","Melanesoid","Asiatic Mongoloid","Kaukasoid"], a:3, e:"Kaukasoid: dari India, Timur Tengah, Australia, Eropa, dan Amerika."},
+  {bab:4, q:"Masyarakat yang memiliki banyak budaya disebut masyarakat ....", opts:["homogen","multikultural","tradisional","modern"], a:1, e:"Masyarakat multikultural = masyarakat dengan banyak budaya."},
+  {bab:4, q:"Contoh perubahan sosial berskala global adalah ....", opts:["perubahan kurikulum","pembangunan jalan desa","perubahan iklim dan revolusi digital","perubahan tradisi lokal"], a:2, e:"Perubahan global: perubahan iklim, revolusi digital, kesenjangan ekonomi, krisis kemanusiaan, perdagangan global."},
+  {bab:4, q:"Persentase suku Batak menurut sensus BPS 2010 adalah ....", opts:["3,58%","15,50%","40,22%","20,00%"], a:0, e:"Suku Batak 3,58%."},
+  {bab:4, q:"Kitab suci agama Islam adalah ....", opts:["Al-Qur'an","Alkitab","Weda","Tripitaka"], a:0, e:"Kitab suci Islam = Al-Qur'an."},
+  {bab:4, q:"Tempat ibadah agama Hindu adalah ....", opts:["masjid","gereja","pura","wihara"], a:2, e:"Tempat ibadah Hindu = pura."},
+  {bab:4, q:"Hari raya agama Buddha adalah ....", opts:["Nyepi","Waisak","Imlek","Natal"], a:1, e:"Hari raya Buddha = Waisak."},
+  {bab:4, q:"Ras Malayan-Mongoloid mendiami wilayah ....", opts:["Papua, Maluku, NTT","Sumatra, Jawa, Bali, NTB, Kalimantan, Sulawesi","India, Timur Tengah, Eropa","Tionghoa, Jepang, Korea"], a:1, e:"Malayan-Mongoloid: Sumatra, Jawa, Bali, NTB, Kalimantan, Sulawesi."},
+  {bab:4, q:"Letak strategis Indonesia yang menjadikannya jalur perdagangan dunia adalah ....", opts:["diapit dua samudra (Pasifik dan Hindia) dan dua benua (Asia dan Australia)","dikelilingi pegunungan tinggi","terletak di kutub utara","berada di wilayah gurun"], a:0, e:"Indonesia diapit dua samudra (Pasifik dan Hindia) dan dua benua (Asia dan Australia)."},
+  {bab:4, q:"Berikut yang termasuk alat musik dari bambu adalah ....", opts:["kolintang","angklung, seruling, dan saluang","beduk, kendang, dan tifa","gitar dan biola"], a:1, e:"Bambu menjadi angklung, seruling, dan saluang."},
+  {bab:4, q:"Sikap yang bijak dalam menyikapi perubahan sosial adalah ....", opts:["menolak semua perubahan","menerima perubahan dengan positif dan melihat peluangnya","menutup diri dari lingkungan","menyerah sebelum mencoba"], a:1, e:"Sikap bijak: menerima perubahan dengan positif dan melihat peluangnya."},
+  {bab:4, q:"Dampak positif keberagaman masyarakat Indonesia adalah ....", opts:["banyak pilihan pemikiran, bakat, dan karya budaya","munculnya perpecahan","hilangnya budaya daerah","berkurangnya toleransi"], a:0, e:"Dampak positif: banyak pilihan pemikiran, bakat, dan karya budaya (rumah adat, makanan khas, dan lain-lain)."},
+  {bab:4, q:"Contoh perubahan sosial berskala lokal adalah ....", opts:["perubahan iklim global","revolusi digital","pembangunan jalan atau jembatan","perdagangan global"], a:2, e:"Perubahan lokal: pembangunan jalan atau jembatan, perubahan gaya hidup, tradisi, dan polusi."},
+
+  /* ============ BAB 5 ============ */
+  {bab:5, q:"Syarat berdirinya negara diatur dalam Konvensi Montevideo tahun ....", opts:["1933","1945","1949","1950"], a:0, e:"Konvensi Montevideo (1933) mengatur syarat berdirinya negara."},
+  {bab:5, q:"Unsur wajib (konstitutif) berdirinya negara adalah ....", opts:["wilayah, rakyat, dan pemerintah yang berdaulat","wilayah, rakyat, dan pengakuan negara lain","rakyat, pemerintah, dan pengakuan negara lain","wilayah, pemerintah, dan pengakuan negara lain"], a:0, e:"Unsur wajib: wilayah, rakyat, dan pemerintah yang berdaulat."},
+  {bab:5, q:"Unsur tambahan (deklaratif) berdirinya negara adalah ....", opts:["wilayah","rakyat","pemerintah yang berdaulat","pengakuan dari negara lain"], a:3, e:"Unsur tambahan (deklaratif) = pengakuan dari negara lain."},
+  {bab:5, q:"Pengakuan yang diberikan karena kenyataannya sebuah negara sudah berdiri dan memenuhi unsur wajib disebut pengakuan ....", opts:["de jure","de facto","deklaratif","konstitutif"], a:1, e:"De facto = diakui karena kenyataannya sudah berdiri dan memenuhi unsur wajib."},
+  {bab:5, q:"Undang-undang yang mengatur wilayah negara Indonesia adalah ....", opts:["UU No. 43 Tahun 2008","UU No. 24 Tahun 2016","UU No. 20 Tahun 2003","UU No. 12 Tahun 2006"], a:0, e:"UU No. 43 Tahun 2008 mengatur wilayah negara."},
+  {bab:5, q:"Jumlah pulau di Indonesia menurut data BPS 2021 adalah ....", opts:["13.466","16.766","17.504","18.307"], a:1, e:"BPS 2021 mencatat 16.766 pulau."},
+  {bab:5, q:"Berikut yang termasuk lima pulau besar di Indonesia adalah ....", opts:["Sumatra, Jawa, Kalimantan, Sulawesi, dan Papua","Sumatra, Jawa, Bali, Sulawesi, dan Papua","Jawa, Kalimantan, Sulawesi, Bali, dan Nusa Tenggara","Sumatra, Jawa, Madura, Sulawesi, dan Papua"], a:0, e:"Lima pulau besar: Sumatra, Jawa, Kalimantan, Sulawesi, dan Papua."},
+  {bab:5, q:"Letak astronomis Indonesia adalah ....", opts:["6° LU–11° LS dan 95°–141° BT","6° LU–11° LS dan 95°–141° BB","11° LU–6° LS dan 141°–95° BT","6° LS–11° LU dan 95°–141° BT"], a:0, e:"Letak astronomis: sekitar 6° LU–11° LS dan 95°–141° BT."},
+  {bab:5, q:"Luas daratan Indonesia sekitar ....", opts:["2 juta km²","4 juta km²","6,4 juta km²","8,3 juta km²"], a:0, e:"Daratan ~2 juta km² (~25%), perairan ~6,4 juta km², total NKRI ~8,3 juta km²."},
+  {bab:5, q:"Laut teritorial Indonesia adalah laut sampai ... dari garis pangkal.", opts:["12 mil laut","24 mil laut","200 mil laut","2.000 mil laut"], a:0, e:"Laut teritorial = 12 mil laut."},
+  {bab:5, q:"Zona tambahan Indonesia adalah paling jauh ... dari garis pangkal.", opts:["12 mil laut","24 mil laut","200 mil laut","2.000 mil laut"], a:1, e:"Zona tambahan = 24 mil laut."},
+  {bab:5, q:"Zona Ekonomi Eksklusif (ZEE) Indonesia adalah sampai ... dari garis pangkal.", opts:["12 mil laut","24 mil laut","200 mil laut","2.000 mil laut"], a:2, e:"ZEE = 200 mil laut."},
+  {bab:5, q:"Zona tambahan, ZEE, dan landas kontinen disebut ....", opts:["wilayah negara","wilayah yurisdiksi","wilayah perairan pedalaman","wilayah udara"], a:1, e:"Zona tambahan, ZEE, dan landas kontinen disebut wilayah yurisdiksi."},
+  {bab:5, q:"Batas wilayah Indonesia di sebelah selatan adalah ....", opts:["Papua Nugini","Filipina","Australia","India"], a:2, e:"Batas selatan: Australia (lewat Laut Indonesia dan Laut Arafuru)."},
+  {bab:5, q:"Batas wilayah Indonesia di sebelah timur adalah ....", opts:["Papua Nugini","Filipina","Australia","India"], a:0, e:"Batas timur: Papua Nugini."},
+  {bab:5, q:"Pasal 1 ayat (1) UUD 1945 menyatakan bahwa ....", opts:["Indonesia adalah negara kesatuan yang berbentuk republik","Indonesia adalah negara kepulauan yang berciri nusantara","bentuk NKRI tidak dapat diubah","Indonesia adalah negara hukum"], a:0, e:"Pasal 1 ayat (1): Indonesia adalah negara kesatuan yang berbentuk republik."},
+  {bab:5, q:"Pasal 25A UUD 1945 menyatakan bahwa ....", opts:["Indonesia adalah negara kesatuan yang berbentuk republik","Indonesia adalah negara kepulauan yang berciri nusantara","bentuk NKRI tidak dapat diubah","Indonesia adalah negara hukum"], a:1, e:"Pasal 25A: Indonesia adalah negara kepulauan yang berciri nusantara."},
+  {bab:5, q:"Pasal 37 ayat (5) UUD 1945 menyatakan bahwa ....", opts:["Indonesia adalah negara kesatuan yang berbentuk republik","Indonesia adalah negara kepulauan yang berciri nusantara","bentuk Negara Kesatuan Republik Indonesia tidak dapat diubah","Indonesia adalah negara hukum"], a:2, e:"Pasal 37 ayat (5): bentuk NKRI tidak dapat diubah."},
+  {bab:5, q:"Republik Indonesia Serikat (RIS) dibubarkan dan Indonesia kembali menjadi NKRI pada tanggal ....", opts:["27 Desember 1949","17 Agustus 1950","5 Juli 1959","17 Agustus 1945"], a:1, e:"17 Agustus 1950 RIS dibubarkan, Indonesia kembali menjadi NKRI."},
+  {bab:5, q:"Dekrit Presiden 5 Juli 1959 berisi ....", opts:["pembentukan RIS","berlakunya kembali UUD 1945","pembubaran NKRI","pemilihan umum pertama"], a:1, e:"Dekrit Presiden 5 Juli 1959: UUD 1945 berlaku kembali."},
+  {bab:5, q:"Batas wilayah Indonesia di sebelah utara adalah ....", opts:["Australia","Papua Nugini","Filipina, Malaysia, dan Singapura","India"], a:2, e:"Batas utara: Filipina, Malaysia, dan Singapura."},
+  {bab:5, q:"Batas wilayah Indonesia di sebelah barat adalah ....", opts:["Papua Nugini","laut yang berbatasan dengan India","Australia","Filipina"], a:1, e:"Batas barat: laut yang berbatasan dengan India."},
+  {bab:5, q:"Luas perairan Indonesia sekitar ....", opts:["2 juta km²","4 juta km²","6,4 juta km²","8,3 juta km²"], a:2, e:"Luas perairan Indonesia ~6,4 juta km², jauh lebih luas daripada daratan."},
+  {bab:5, q:"Luas seluruh NKRI (darat dan perairan) sekitar ....", opts:["2 juta km²","4 juta km²","6,4 juta km²","8,3 juta km²"], a:3, e:"Luas seluruh NKRI ~8,3 juta km²."},
+  {bab:5, q:"Landas kontinen Indonesia mencapai sekitar ....", opts:["12 mil laut","24 mil laut","200 mil laut","2.000 mil laut"], a:2, e:"Landas kontinen: dasar laut dan tanah di bawahnya sampai sekitar 200 mil."},
+  {bab:5, q:"Tokoh yang mengusulkan bentuk negara kesatuan dalam sidang BPUPK adalah ....", opts:["Soepomo","Hatta","Yamin","Sukarno"], a:0, e:"Soepomo mengusulkan negara kesatuan; Hatta mengusulkan federal."},
+  {bab:5, q:"Tokoh yang berpendapat bahwa negara federal (serikat) lebih cocok bagi bangsa Indonesia yang beragam adalah ....", opts:["Soepomo","Hatta","Yamin","Sukarno"], a:1, e:"Hatta berpendapat negara federal lebih cocok bagi bangsa yang sangat beragam."},
+  {bab:5, q:"Konferensi Meja Bundar (KMB) di Den Haag pada 27 Desember 1949 menghasilkan ....", opts:["Belanda mengakui kedaulatan Indonesia, bentuk negara menjadi serikat (RIS)","Indonesia kembali menjadi NKRI","Pancasila ditetapkan sebagai dasar negara","UUD 1945 berlaku kembali"], a:0, e:"KMB 27 Desember 1949: Belanda mengakui kedaulatan Indonesia; bentuk negara menjadi serikat (RIS)."},
+  {bab:5, q:"Berikut yang termasuk sikap yang harus dihindari demi menjaga keutuhan NKRI adalah ....", opts:["etnosentrisme","toleransi","gotong royong","cinta tanah air"], a:0, e:"Etnosentrisme (menganggap budaya sendiri paling baik dan merendahkan budaya lain) harus dihindari."},
+  {bab:5, q:"Sikap cinta tanah air (nasionalisme) yang benar adalah ....", opts:["mencintai bangsa sendiri tanpa merendahkan bangsa lain","menutup diri dari bangsa lain","menganggap bangsa lain lebih rendah","menolak semua pengaruh asing"], a:0, e:"Nasionalisme yang benar mencintai bangsa sendiri tanpa merendahkan bangsa lain."},
+  {bab:5, q:"Perairan di sisi darat dari garis pantai disebut ....", opts:["perairan pedalaman","perairan kepulauan","laut teritorial","zona tambahan"], a:0, e:"Perairan pedalaman = semua perairan di sisi darat dari garis pantai."}
+];
+
+/* =========================================================
+   BANK SOAL — 5 URAIAN PER BAB (25 total)
+   ========================================================= */
+const ESSAY = [
+  /* --- BAB 1 --- */
+  {bab:1, q:"Sebutkan tiga langkah lahirnya Pancasila beserta tanggal dan lembaga/tokohnya.",
+   keys:["1 juni","22 juni","18 agustus","bpupk","panitia","ppki","piagam"], min:3,
+   model:"1 Juni 1945 — pidato Ir. Sukarno di sidang BPUPK; 22 Juni 1945 — Piagam Jakarta disusun Panitia Sembilan; 18 Agustus 1945 — PPKI menetapkan Pancasila dalam Pembukaan UUD 1945."},
+  {bab:1, q:"Jelaskan urutan lembaga yang berperan dalam proses lahirnya Pancasila beserta tugas singkat masing-masing.",
+   keys:["bpupk","panitia sembilan","ppki","penyelidik","piagam","persiapan"], min:3,
+   model:"BPUPK (Badan Penyelidik Usaha Persiapan Kemerdekaan Indonesia) bertugas menyelidiki dan menyiapkan hal-hal untuk kemerdekaan. Panitia Sembilan bertugas menyusun Piagam Jakarta (22 Juni 1945). PPKI (Panitia Persiapan Kemerdekaan Indonesia) bertugas menetapkan Pancasila dan UUD 1945 (18 Agustus 1945)."},
+  {bab:1, q:"Mengapa sila pertama dalam Piagam Jakarta diubah menjadi “Ketuhanan Yang Maha Esa”? Nilai apa yang ditunjukkan para pendiri bangsa?",
+   keys:["persatuan","rela berkorban","mendahulukan","kepentingan bangsa","tidak memaksakan","bersatu","rukun"], min:2,
+   model:"Perubahan dilakukan demi menjaga persatuan bangsa. Para pendiri bangsa menunjukkan sikap rela berkorban dan tidak memaksakan kehendak — mereka mendahulukan kepentingan bangsa di atas kepentingan pribadi dan golongan."},
+  {bab:1, q:"Sebutkan lima prinsip yang disampaikan Ir. Sukarno dalam pidato 1 Juni 1945.",
+   keys:["kebangsaan","internasionalisme","mufakat","kesejahteraan","ketuhanan","demokrasi"], min:3,
+   model:"Lima prinsip: Kebangsaan, Internasionalisme (Peri Kemanusiaan), Mufakat (Demokrasi), Kesejahteraan Sosial, dan Ketuhanan. Gagasan itu diberi nama Pancasila."},
+  {bab:1, q:"Jelaskan peristiwa Rengasdengklok: tanggal, tokoh, tujuan, dan hasilnya.",
+   keys:["16 agustus","sukarni","wikana","chaerul","rengasdengklok","proklamasi","hadiah","segera"], min:3,
+   model:"Peristiwa Rengasdengklok terjadi 16 Agustus 1945. Para pemuda (Sukarni, Wikana, Chaerul Saleh) membawa Sukarno dan Hatta ke Rengasdengklok agar proklamasi segera dilakukan, sehingga kemerdekaan tidak dianggap hadiah dari Jepang. Setelah golongan tua dan muda sepakat (dengan bantuan Achmad Soebardjo), mereka kembali ke Jakarta dan proklamasi pun dilaksanakan 17 Agustus 1945."},
+
+  /* --- BAB 2 --- */
+  {bab:2, q:"Sebutkan empat manfaat Pancasila sebagai dasar negara beserta penjelasan singkatnya.",
+   keys:["pedoman","hukum","cita-cita","kepribadian"], min:3,
+   model:"(1) Pedoman hidup — panduan mengambil keputusan dan memecahkan masalah; (2) sumber hukum — semua peraturan tidak boleh bertentangan dengan nilai Pancasila; (3) cita-cita bangsa — tujuan hidup adil dan sejahtera; (4) kepribadian bangsa — identitas yang membedakan kita dari bangsa lain."},
+  {bab:2, q:"Sebutkan lima sila Pancasila beserta lambangnya secara berurutan.",
+   keys:["bintang","rantai","beringin","banteng","padi","kapas"], min:4,
+   model:"(1) Ketuhanan Yang Maha Esa — Bintang; (2) Kemanusiaan yang Adil dan Beradab — Rantai; (3) Persatuan Indonesia — Pohon Beringin; (4) Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan — Kepala Banteng; (5) Keadilan Sosial bagi Seluruh Rakyat Indonesia — Padi dan Kapas."},
+  {bab:2, q:"Jelaskan asas pemilu di Indonesia: LUBER dan JURDIL, serta kepanjangan masing-masing.",
+   keys:["langsung","umum","bebas","rahasia","jujur","adil"], min:4,
+   model:"LUBER = Langsung, Umum, Bebas, Rahasia. JURDIL = Jujur dan Adil. Pemilu di Indonesia dilaksanakan dengan kedua asas tersebut."},
+  {bab:2, q:"Berikan tiga contoh pengamalan sila ketiga (Persatuan Indonesia) di lingkungan sekolah, keluarga, dan masyarakat.",
+   keys:["sekolah","keluarga","masyarakat","teman","menghargai","gotong","rukun","persatuan","toleran"], min:3,
+   model:"Contoh: (1) Di sekolah — berteman tanpa membeda-bedakan suku, agama, ras; (2) di keluarga — menjaga kerukunan antaranggota keluarga; (3) di masyarakat — ikut kerja bakti dan menghargai tetangga yang berbeda latar belakang."},
+  {bab:2, q:"Berikan tiga contoh pengamalan Pancasila dalam kehidupan sehari-hari sebagai pedoman hidup.",
+   keys:["antre","musyawarah","gotong","menghargai","ibadah","teman","berbeda","adil"], min:3,
+   model:"Contoh: beribadah dengan tertib dan tidak memaksakan agama (sila 1), antre dan gotong royong (sila 5), musyawarah memilih ketua kelas (sila 4), menghargai teman yang berbeda agama (sila 1), serta berteman tanpa membeda-bedakan (sila 3)."},
+
+  /* --- BAB 3 --- */
+  {bab:3, q:"Sebutkan empat macam norma beserta sumber dan satu contoh masing-masing.",
+   keys:["agama","kesusilaan","kesopanan","hukum"], min:3,
+   model:"(1) Norma agama — sumber: Tuhan (kitab suci), contoh: beribadah; (2) norma kesusilaan — sumber: hati nurani, contoh: jujur; (3) norma kesopanan — sumber: kebiasaan masyarakat/tata krama, contoh: antre; (4) norma hukum — sumber: lembaga resmi yang berwenang & tertulis, contoh: menaati aturan lalu lintas."},
+  {bab:3, q:"Sebutkan ciri-ciri norma dan tiga fungsi norma dalam kehidupan bermasyarakat.",
+   keys:["perintah","larangan","sanksi","mengikat","ketertiban","keadilan","mengendalikan","penuntun"], min:3,
+   model:"Ciri norma: ada perintah, ada larangan, ada sanksi, dan bersifat mengikat/memaksa. Fungsi norma: menciptakan ketertiban dan keamanan, menjadi penuntun/pedoman bertindak, memberi sanksi agar jera, mengendalikan perilaku masyarakat, dan menciptakan keadilan."},
+  {bab:3, q:"Sebutkan tiga penyebab orang melanggar norma beserta contohnya.",
+   keys:["kendali","terbiasa","kurang dijelaskan","tekanan","kesadaran","persatuan"], min:3,
+   model:"(1) Tidak bisa mengendalikan diri (membuang sampah sembarangan); (2) sudah terbiasa melanggar (sering terlambat karena sanksi ringan); (3) norma kurang dijelaskan (aturan seragam tidak jelas); (4) tekanan lingkungan (dipaksa teman berbohong); (5) kesadaran rendah (mencoret-coret meja); (6) rasa persatuan menurun (tidak mau satu tim dengan teman berbeda suku)."},
+  {bab:3, q:"Jelaskan bagaimana cara bertindak sesuai norma di empat lingkungan: keluarga, sekolah, masyarakat, dan bangsa-negara.",
+   keys:["keluarga","sekolah","masyarakat","negara","orang tua","seragam","kerja bakti","lalu lintas","pajak"], min:3,
+   model:"(1) Keluarga — menghormati orang tua, membantu pekerjaan rumah; (2) sekolah — memakai seragam sesuai aturan, bekerja sama dalam tugas; (3) masyarakat — mengucapkan salam, ikut kerja bakti; (4) bangsa-negara — menaati aturan lalu lintas, membayar pajak, menjaga fasilitas umum."},
+  {bab:3, q:"Tuliskan pelajaran yang dapat diambil dari kisah “R” yang menyebarkan kabar bohong melalui media sosial.",
+   keys:["pikir","informasi","bohong","akibat","tanggung jawab","hoaks","medsos","media sosial"], min:2,
+   model:"Pelajaran dari kisah R: pikir dulu sebelum membagikan informasi. Menyebarkan kabar bohong membawa akibat buruk — HP disita, belajar mandiri di ruang guru, dan membuat surat pernyataan. Kita harus bertanggung jawab atas informasi yang kita sebarkan."},
+
+  /* --- BAB 4 --- */
+  {bab:4, q:"Jelaskan arti semboyan Bhinneka Tunggal Ika dan mengapa semboyan itu penting bagi bangsa Indonesia yang beragam.",
+   keys:["berbeda","satu","persatuan","rukun","menghargai","toleran","menghormati","bersatu"], min:3,
+   model:"Bhinneka Tunggal Ika berarti “berbeda-beda tetapi tetap satu jua”. Penting karena Indonesia sangat beragam (suku, agama, ras, antargolongan), sehingga kita perlu saling menghargai, toleran, dan bekerja sama agar persatuan bangsa tetap kuat."},
+  {bab:4, q:"Sebutkan lima faktor penyebab Indonesia sangat beragam.",
+   keys:["letak strategis","kepulauan","kondisi alam","transportasi","komunikasi","penerimaan","perubahan"], min:3,
+   model:"(1) Letak strategis (diapit dua samudra dan dua benua); (2) negara kepulauan dengan ribuan pulau; (3) kondisi alam berbeda-beda; (4) transportasi dan komunikasi yang memudahkan perpindahan; (5) penerimaan masyarakat atas perubahan."},
+  {bab:4, q:"Jelaskan pengertian ras dan sikap yang benar dalam menghadapi perbedaan ras.",
+   keys:["ciri fisik","bawaan","lahir","kualitas","hormat","menghina","melecehkan","tidak membedakan"], min:2,
+   model:"Ras = pengelompokan manusia berdasarkan ciri fisik yang dikaitkan dengan daerah asalnya. Perbedaan ras bersifat bawaan sejak lahir dan tidak menunjukkan perbedaan kualitas manusia. Sikap yang benar: menghormati setiap orang, tidak menghina atau melecehkan ras orang lain."},
+  {bab:4, q:"Sebutkan tiga suku terbesar di Indonesia beserta persentasenya menurut sensus BPS 2010.",
+   keys:["jawa","sunda","batak","40,22","15,50","3,58","persen"], min:3,
+   model:"Tiga suku terbesar: Jawa (40,22%), Sunda (15,50%), dan Batak (3,58%). Indonesia memiliki lebih dari 1.300 suku bangsa."},
+  {bab:4, q:"Sebutkan tiga sikap bijak dalam menyikapi perubahan sosial.",
+   keys:["terima","evaluasi","rencana","komunikasi","menyerah","belajar","positif","peluang"], min:3,
+   model:"Sikap bijak: (1) terima perubahan dengan positif dan lihat peluangnya; (2) evaluasi apa yang berubah dan apa yang tidak; (3) buat rencana tindakan; (4) berkomunikasi dan berdiskusi dengan orang lain; (5) jangan cepat menyerah; (6) terus belajar hal-hal baru."},
+
+  /* --- BAB 5 --- */
+  {bab:5, q:"Sebutkan tiga unsur wajib (konstitutif) berdirinya negara, satu unsur tambahan (deklaratif), dan dua pasal UUD 1945 yang mengatur tentang bentuk NKRI.",
+   keys:["wilayah","rakyat","pemerintah","pengakuan","pasal 1","pasal 25a","pasal 37"], min:4,
+   model:"Unsur wajib: wilayah, rakyat, dan pemerintah yang berdaulat. Unsur tambahan: pengakuan dari negara lain (de facto dan de jure). Pasal UUD 1945: Pasal 1 ayat (1) — NKRI berbentuk republik; Pasal 25A — negara kepulauan berciri nusantara; Pasal 37 ayat (5) — bentuk NKRI tidak dapat diubah."},
+  {bab:5, q:"Sebutkan batas-batas wilayah Indonesia di empat arah (utara, selatan, timur, barat).",
+   keys:["utara","selatan","timur","barat","filipina","malaysia","singapura","australia","papua nugini","india"], min:3,
+   model:"Utara: Filipina, Malaysia, Singapura. Selatan: Australia (lewat Laut Indonesia dan Laut Arafuru). Timur: Papua Nugini. Barat: laut yang berbatasan dengan India."},
+  {bab:5, q:"Jelaskan perjalanan bentuk negara Indonesia dari tahun 1945 hingga 1959.",
+   keys:["1945","kesatuan","1949","serikat","ris","1950","nkri","1959","dekrit","uud 1945"], min:3,
+   model:"(1) 1945 — UUD 1945 menetapkan Indonesia sebagai negara kesatuan; (2) 27 Desember 1949 — KMB, bentuk negara menjadi serikat (RIS); (3) 17 Agustus 1950 — RIS dibubarkan, Indonesia kembali menjadi NKRI; (4) 5 Juli 1959 — Dekrit Presiden, UUD 1945 berlaku kembali."},
+  {bab:5, q:"Sebutkan tiga sikap yang harus dihindari dan tiga sikap yang harus dikembangkan demi menjaga keutuhan NKRI.",
+   keys:["individualisme","sukuisme","etnosentrisme","fanatisme","ekstremisme","cinta tanah air","rela berkorban","toleransi","gotong royong","nasionalisme"], min:4,
+   model:"Dihindari: individualisme, sukuisme, etnosentrisme, fanatisme, ekstremisme. Dikembangkan: cinta tanah air (nasionalisme), rela berkorban, toleransi, dan kerja sama (gotong royong)."},
+  {bab:5, q:"Jelaskan pengertian pengakuan de facto dan de jure, serta berikan contohnya.",
+   keys:["de facto","de jure","kenyataan","hukum","berdiri","perjanjian","diakui"], min:2,
+   model:"Pengakuan de facto = pengakuan berdasarkan kenyataan bahwa sebuah negara sudah berdiri dan memenuhi unsur wajib. Pengakuan de jure = pengakuan secara hukum, misalnya lewat perjanjian. Indonesia memperoleh keduanya setelah proklamasi 17 Agustus 1945."}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const state = { name:"", kelas:"", materi:"all", quizMC:[], quizEssay:[], mc:{}, essay:{}, cheatCount:0 };
+let quizActive = false;
+let cheatCount = 0;
+let lastSubmitData = null;
+
+const $ = id => document.getElementById(id);
+function escapeHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function stripHtml(s){return String(s).replace(/<[^>]+>/g,"");}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getChapters(){
+  return state.materi === "all" ? [1,2,3,4,5] : [Number(state.materi)];
+}
+
+/* =========================================================
+   BUILD QUIZ INSTANCE (dipanggil sekali saat mulai)
+   ========================================================= */
+function buildQuizInstance(){
+  const chapters = getChapters();
+  state.quizMC = [];
+  state.quizEssay = [];
+
+  for(const bab of chapters){
+    // Filter bank per bab
+    const babMC = MC.filter(q => q.bab === bab);
+    const babEssay = ESSAY.filter(e => e.bab === bab);
+
+    // Acak lalu ambil 20 PG
+    const pickedMC = shuffle(babMC).slice(0, PICK_MC_PER_BAB);
+    for(const q of pickedMC){
+      // Acak opsi jawaban juga
+      const optsWithIdx = q.opts.map((opt, i) => ({opt, origIdx: i}));
+      const shuffled = shuffle(optsWithIdx);
+      const correctShuffledIdx = shuffled.findIndex(o => o.origIdx === q.a);
+      state.quizMC.push({
+        bab: q.bab,
+        q: q.q,
+        e: q.e,
+        shuffledOpts: shuffled.map(o => o.opt),
+        correctShuffledIdx
+      });
+    }
+
+    // Acak lalu ambil 3 uraian
+    const pickedEssay = shuffle(babEssay).slice(0, PICK_ESSAY_PER_BAB);
+    for(const e of pickedEssay){
+      state.quizEssay.push({...e});
+    }
+  }
+}
+
+/* =========================================================
+   BUILD QUIZ HTML
+   ========================================================= */
+function buildQuiz(){
+  let html = "";
+  let qNum = 0;
+  const chapters = getChapters();
+
+  for(const bab of chapters){
+    // Kelompokkan MC per bab dengan display index
+    const babMC = [];
+    state.quizMC.forEach((q, i) => {
+      if(q.bab === bab) babMC.push({...q, displayIdx: i});
+    });
+    if(!babMC.length) continue;
+
+    html += `<section class="card">
+      <div class="card-head"><span class="badge">Bab ${bab}</span><h2>${BAB_TITLE[bab]}</h2></div>
+      <p class="hint">Pilih satu jawaban yang paling tepat. (${babMC.length} soal · urutan diacak)</p>`;
+
+    for(const q of babMC){
+      qNum++;
+      html += `<div class="q" data-q="${q.displayIdx}">
+        <p class="qtext"><span class="num">${qNum}</span><span>${q.q}</span></p>
+        <div class="opts">`;
+      q.shuffledOpts.forEach((opt, j) => {
+        html += `<label class="opt">
+          <input type="radio" name="q${q.displayIdx}" value="${j}">
+          <span class="dot"></span>
+          <span class="txt">${opt}</span>
+        </label>`;
+      });
+      html += `</div></div>`;
+    }
+    html += `</section>`;
+  }
+
+  if(state.quizEssay.length){
+    html += `<section class="card">
+      <div class="card-head"><span class="badge">Bagian B</span><h2>Soal Uraian Singkat</h2></div>
+      <p class="hint">Jawab dengan kalimatmu sendiri — singkat, jelas, dan padat. (${state.quizEssay.length} soal · urutan diacak)</p>`;
+    state.quizEssay.forEach((e, i) => {
+      qNum++;
+      html += `<div class="q" data-e="${i}">
+        <p class="qtext"><span class="num">${qNum}</span><span>${e.q}</span></p>
+        <div class="essay-wrap">
+          <textarea rows="4" placeholder="Tulis jawabanmu di sini..."></textarea>
+        </div>
+      </div>`;
+    });
+    html += `</section>`;
+  }
+
+  return html;
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+function updateProgress(){
+  const total = state.quizMC.length + state.quizEssay.length;
+  const doneMC = state.quizMC.filter((_, i) => state.mc[i] !== undefined).length;
+  const doneEssay = state.quizEssay.filter((_, i) => (state.essay[i]||"").trim().length > 0).length;
+  const done = doneMC + doneEssay;
+  const pct = total ? Math.round(done/total*100) : 0;
+  $("progText").textContent = `Terjawab ${done} / ${total}`;
+  $("progPct").textContent = pct + "%";
+  $("progFill").style.width = pct + "%";
+}
+
+/* =========================================================
+   START
+   ========================================================= */
+$("btnStart").addEventListener("click", () => {
+  const nama = $("inName").value.trim();
+  const kelas = $("inClass").value.trim();
+  if(!nama || !kelas){ $("errMsg").style.display = "block"; return; }
+  $("errMsg").style.display = "none";
+  state.name = nama; state.kelas = kelas;
+  state.materi = document.querySelector('input[name="materi"]:checked').value;
+
+  buildQuizInstance();
+  $("quizBody").innerHTML = buildQuiz();
+  $("startScreen").style.display = "none";
+  $("quizScreen").style.display = "block";
+  document.body.classList.add("disable-select");
+  updateProgress();
+  activateCheatDetection();
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+/* =========================================================
+   ANSWER INTERACTION
+   ========================================================= */
+$("quizBody").addEventListener("change", e => {
+  if(e.target.type !== "radio") return;
+  const idx = Number(e.target.name.slice(1));
+  state.mc[idx] = Number(e.target.value);
+  const wrap = e.target.closest(".q");
+  wrap.querySelectorAll(".opt").forEach(l => l.classList.remove("selected"));
+  e.target.closest(".opt").classList.add("selected");
+  updateProgress();
+});
+$("quizBody").addEventListener("input", e => {
+  if(e.target.tagName !== "TEXTAREA") return;
+  const idx = Number(e.target.closest(".q").dataset.e);
+  state.essay[idx] = e.target.value;
+  updateProgress();
+});
+
+/* =========================================================
+   CHEAT DETECTION
+   ========================================================= */
+function activateCheatDetection(){
+  quizActive = true;
+  document.addEventListener("visibilitychange", onVisibilityChange);
+  document.addEventListener("contextmenu", onContextMenu);
+  document.addEventListener("copy", onCopy);
+  document.addEventListener("cut", onCopy);
+  document.addEventListener("keydown", onKeydown);
+}
+function deactivateCheatDetection(){
+  quizActive = false;
+  document.removeEventListener("visibilitychange", onVisibilityChange);
+  document.removeEventListener("contextmenu", onContextMenu);
+  document.removeEventListener("copy", onCopy);
+  document.removeEventListener("cut", onCopy);
+  document.removeEventListener("keydown", onKeydown);
+}
+function onVisibilityChange(){ if(quizActive && document.hidden) registerCheat("Berpindah tab / meninggalkan halaman"); }
+function onContextMenu(e){ if(!quizActive) return; e.preventDefault(); registerCheat("Klik kanan"); }
+function onCopy(e){ if(!quizActive) return; e.preventDefault(); registerCheat("Menyalin / memotong teks"); }
+function onKeydown(e){
+  if(!quizActive) return;
+  const k = e.key.toLowerCase();
+  const ctrl = e.ctrlKey || e.metaKey;
+  if(e.key === "F12" || (ctrl && ["c","p","u","s"].includes(k))){
+    e.preventDefault();
+    registerCheat("Shortcut terlarang (" + (e.ctrlKey ? "Ctrl" : "Cmd") + "+" + e.key.toUpperCase() + ")");
+  }
+}
+function registerCheat(reason){
+  if(!quizActive) return;
+  cheatCount++; state.cheatCount = cheatCount;
+  if(cheatCount >= MAX_CHEAT){
+    showWarning(reason, cheatCount, true);
+    setTimeout(() => { deactivateCheatDetection(); doSubmit(true); }, 3000);
+  } else {
+    showWarning(reason, cheatCount, false);
+  }
+}
+function showWarning(reason, count, isFinal){
+  const overlay = $("warnOverlay");
+  if(isFinal){
+    $("warnIcon").textContent = "⛔";
+    $("warnTitle").textContent = "Tugas Dikumpulkan Otomatis";
+    $("warnMsg").innerHTML = `Kamu telah melanggar <b>${count} kali</b>. Tugas akan dikumpulkan otomatis dalam <b>3 detik</b>.`;
+    $("warnSub").textContent = "Pelanggaran tercatat dan akan dilaporkan ke guru.";
+    $("warnClose").style.display = "none";
+  } else {
+    $("warnIcon").textContent = "⚠️";
+    $("warnTitle").textContent = "Jangan Mencoba Mencontek!";
+    $("warnMsg").innerHTML = `Terdeteksi: <b>${escapeHtml(reason)}</b>`;
+    $("warnSub").innerHTML = `Jika mencapai <b>${MAX_CHEAT} kali</b>, tugas akan otomatis dikumpulkan dengan nilai saat ini.`;
+    $("warnClose").style.display = "inline-flex";
+  }
+  $("warnNum").textContent = count;
+  overlay.classList.add("show");
+}
+$("warnClose").addEventListener("click", () => $("warnOverlay").classList.remove("show"));
+
+/* =========================================================
+   SUBMIT & SCORING
+   ========================================================= */
+$("btnSubmit").addEventListener("click", () => {
+  const doneMC = state.quizMC.filter((_, i) => state.mc[i] !== undefined).length;
+  const doneEssay = state.quizEssay.filter((_, i) => (state.essay[i]||"").trim().length > 0).length;
+  const belum = (state.quizMC.length + state.quizEssay.length) - (doneMC + doneEssay);
+  if(belum > 0 && !confirm(`Masih ada ${belum} soal yang belum kamu jawab.\n\nTetap kumpulkan sekarang?`)) return;
+  doSubmit(false);
+});
+
+function essayScore(item, text){
+  const t = (text||"").toLowerCase();
+  if(!t.trim()) return 0;
+  let hit = 0;
+  item.keys.forEach(k => { if(t.includes(k)) hit++; });
+  return Math.min(1, hit / item.min);
+}
+function predikat(n){
+  if(n >= 90) return {k:"a", t:"Sangat Baik (A)"};
+  if(n >= 80) return {k:"b", t:"Baik (B)"};
+  if(n >= 70) return {k:"c", t:"Cukup (C)"};
+  return {k:"d", t:"Perlu Belajar Lagi (D)"};
+}
+
+function doSubmit(autoSubmit){
+  deactivateCheatDetection();
+  document.body.classList.remove("disable-select");
+
+  let benarMC = 0;
+  state.quizMC.forEach((q, i) => {
+    if(state.mc[i] === q.correctShuffledIdx) benarMC++;
+  });
+
+  let essayCredit = 0;
+  state.quizEssay.forEach((e, i) => {
+    essayCredit += essayScore(e, state.essay[i]);
+  });
+
+  const mcPct = state.quizMC.length ? benarMC / state.quizMC.length : 0;
+  const essayPct = state.quizEssay.length ? essayCredit / state.quizEssay.length : 1;
+  const poinMC = Math.round(mcPct * POIN_MC_TOTAL);
+  const poinEssay = Math.round(essayPct * POIN_ESSAY_TOTAL);
+  const total = poinMC + poinEssay;
+
+  lastSubmitData = {autoSubmit, benarMC, essayCredit, poinMC, poinEssay, total, p:predikat(total)};
+  renderResult();
+}
+
+/* =========================================================
+   RENDER RESULT
+   ========================================================= */
+function renderResult(){
+  const d = lastSubmitData;
+  const materiLabel = state.materi === "all" ? "Semua Bab (1–5)" : `Bab ${state.materi} — ${BAB_TITLE[state.materi]}`;
+  const chapters = getChapters();
+
+  // Statistik per bab
+  const perBab = {};
+  chapters.forEach(b => perBab[b] = {benar:0, total:0});
+  state.quizMC.forEach((q, i) => {
+    perBab[q.bab].total++;
+    if(state.mc[i] === q.correctShuffledIdx) perBab[q.bab].benar++;
+  });
+
+  let html = `
+    <div class="card result-head">
+      <h2>Hasil Tugas</h2>
+      <p class="who">${escapeHtml(state.name)} · Kelas ${escapeHtml(state.kelas)}</p>
+      <p class="who" style="margin-top:-10px;font-size:.82rem">Materi: ${escapeHtml(materiLabel)}</p>
+      <div class="ring" style="--p:${d.total}">
+        <div class="ring-inner">
+          <span class="big">${d.total}</span>
+          <span class="small">dari 100</span>
+        </div>
+      </div>
+      <div class="predikat ${d.p.k}">${d.p.t}</div>
+      <p class="summary">Pilihan ganda: <b>${d.benarMC}/${state.quizMC.length}</b> benar → <b>${d.poinMC}</b>/${POIN_MC_TOTAL} poin
+        &nbsp;·&nbsp; Uraian: <b>${Math.round(d.essayCredit*100)/100}/${state.quizEssay.length}</b> → <b>${d.poinEssay}</b>/${POIN_ESSAY_TOTAL} poin</p>
+      ${cheatCount > 0
+        ? `<div class="cheat-bad">⚠️ ${cheatCount}× terdeteksi berpindah tab / mencontek</div>`
+        : `<div class="cheat-good">✓ Tidak ada pelanggaran</div>`}
+      ${d.autoSubmit ? `<span class="auto-note">⛔ Tugas dikumpulkan otomatis karena mencapai batas pelanggaran.</span>` : ""}
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="badge">Rincian</span><h2>Capaian Pilihan Ganda per Bab</h2></div>
+      <div class="bars">`;
+
+  for(const bab of chapters){
+    const s = perBab[bab];
+    const pct = s.total ? Math.round(s.benar/s.total*100) : 0;
+    html += `<div class="bar-row">
+      <span>Bab ${bab}</span>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <span>${s.benar}/${s.total}</span>
+    </div>`;
+  }
+  html += `</div></div>`;
+
+  html += `
+    <div class="email-card no-print" id="emailCard">
+      <div class="email-icon">📧</div>
+      <h3>Kirim Hasil ke Guru</h3>
+      <p>Hasil akan dikirim ke <b>${TEACHER_EMAIL}</b></p>
+      <button class="btn full" id="btnSendEmail" disabled>⏳ Menyiapkan...</button>
+      <div class="email-status" id="emailStatus"></div>
+      <p class="email-note">Catatan: guru perlu memverifikasi FormSubmit sekali sebelum menerima email pertama.</p>
+    </div>`;
+
+  // Pembahasan PG per bab
+  html += `<div class="card">
+    <div class="card-head"><span class="badge">Bagian A</span><h2>Pembahasan Pilihan Ganda</h2></div>`;
+  for(const bab of chapters){
+    const babMC = [];
+    state.quizMC.forEach((q, i) => {
+      if(q.bab === bab) babMC.push({...q, displayIdx: i});
+    });
+    if(!babMC.length) continue;
+    const benarBab = babMC.filter(q => state.mc[q.displayIdx] === q.correctShuffledIdx).length;
+    html += `<details class="rev-group">
+      <summary>Bab ${bab} — ${BAB_TITLE[bab]} (${benarBab}/${babMC.length} benar)</summary>
+      <div class="rev-body">`;
+    babMC.forEach((q) => {
+      const globalIdx = state.quizMC.indexOf(q) + 1;
+      // Note: q is a copy, so we use displayIdx
+      const ans = state.mc[q.displayIdx];
+      const ok = ans === q.correctShuffledIdx;
+      const teksJawab = ans === undefined ? "<i>tidak dijawab</i>" : q.shuffledOpts[ans];
+      const jawabanBenar = q.shuffledOpts[q.correctShuffledIdx];
+      html += `<div class="rev ${ok?"ok":"no"}">
+        <span class="tag">${ok ? "✔ Benar" : "✘ Belum tepat"}</span>
+        <p class="qtext" style="margin-top:6px"><span class="num">${globalIdx}</span><span>${q.q}</span></p>
+        <p class="ans">Jawabanmu: <b>${teksJawab}</b></p>
+        ${ok ? "" : `<p class="ans">Jawaban benar: <b>${jawabanBenar}</b></p>`}
+        <p class="exp">💡 ${q.e}</p>
+      </div>`;
+    });
+    html += `</div></details>`;
+  }
+  html += `</div>`;
+
+  // Pembahasan Uraian
+  if(state.quizEssay.length){
+    html += `<div class="card">
+      <div class="card-head"><span class="badge">Bagian B</span><h2>Pembahasan Soal Uraian</h2></div>`;
+    state.quizEssay.forEach((item, i) => {
+      const teks = (state.essay[i]||"").trim();
+      const score = essayScore(item, teks);
+      const ok = score >= 1;
+      const globalIdx = state.quizMC.length + i + 1;
+      html += `<div class="rev ${ok?"ok":"no"}">
+        <span class="tag">${ok ? "✔ Benar" : (score > 0 ? "⚠ Sebagian" : "✘ Perlu dilengkapi")}</span>
+        <p class="qtext" style="margin-top:6px"><span class="num">${globalIdx}</span><span>${item.q}</span></p>
+        <p class="ans" style="margin-bottom:6px">Jawabanmu:</p>
+        <div class="txt-ans">${teks ? escapeHtml(teks) : "<i>tidak dijawab</i>"}</div>
+        <p class="exp">📖 Contoh jawaban: ${item.model}</p>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div class="actions no-print">
+      <button class="btn ghost" id="btnPrint">🖨️ Cetak / Simpan PDF</button>
+      <button class="btn" id="btnUlang">🔄 Kerjakan Ulang</button>
+    </div>`;
+
+  $("resultScreen").innerHTML = html;
+  $("resultScreen").style.display = "block";
+  $("quizScreen").style.display = "none";
+  window.scrollTo({top:0, behavior:"smooth"});
+  $("btnPrint").addEventListener("click", () => window.print());
+  $("btnUlang").addEventListener("click", () => location.reload());
+  autoSendEmail();
+}
+
+/* =========================================================
+   EMAIL SENDING
+   ========================================================= */
+function buildDetailText(){
+  let text = "DETAIL JAWABAN\n\nPILIHAN GANDA:\n";
+  state.quizMC.forEach((q, i) => {
+    const ans = state.mc[i];
+    const ok = ans === q.correctShuffledIdx;
+    text += `${i+1}. ${ok ? "✓" : "✗"} ${stripHtml(q.q)}\n`;
+    text += `   Jawaban: ${ans !== undefined ? stripHtml(q.shuffledOpts[ans]) : "(tidak dijawab)"}`;
+    if(!ok) text += ` → Seharusnya: ${stripHtml(q.shuffledOpts[q.correctShuffledIdx])}`;
+    text += "\n";
+  });
+  text += "\nURAIAN:\n";
+  state.quizEssay.forEach((item, i) => {
+    const ans = (state.essay[i]||"").trim();
+    const score = essayScore(item, ans);
+    text += `${i+1}. ${score >= 1 ? "✓" : (score > 0 ? "~" : "✗")} ${item.q}\n`;
+    text += `   Jawaban: ${ans || "(tidak dijawab)"}\n`;
+  });
+  return text;
+}
+
+function buildEmailPayload(){
+  const d = lastSubmitData;
+  const materiLabel = state.materi === "all" ? "Semua Bab (1–5)" : `Bab ${state.materi} — ${BAB_TITLE[state.materi]}`;
+  return {
+    _subject: `Tugas Pancasila — ${state.name} (${state.kelas})`,
+    _captcha: "false",
+    "Nama": state.name,
+    "Kelas": state.kelas,
+    "Materi": materiLabel,
+    "Waktu": new Date().toLocaleString("id-ID"),
+    "Skor Pilihan Ganda": `${d.benarMC} / ${state.quizMC.length} benar (${d.poinMC} / ${POIN_MC_TOTAL} poin)`,
+    "Skor Uraian": `${Math.round(d.essayCredit*100)/100} / ${state.quizEssay.length} (${d.poinEssay} / ${POIN_ESSAY_TOTAL} poin)`,
+    "NILAI AKHIR": `${d.total} / 100`,
+    "Predikat": d.p.t,
+    "Pelanggaran Tab/Mencontek": `${state.cheatCount} kali`,
+    "Status": d.autoSubmit ? "AUTO-SUBMIT karena melanggar batas" : "Dikumpulkan manual",
+    "Detail Jawaban": buildDetailText()
+  };
+}
+
+async function sendViaFormSubmit(){
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${TEACHER_EMAIL}`, {
+      method: "POST",
+      headers: {"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify(buildEmailPayload())
+    });
+    if(!res.ok) return false;
+    const data = await res.json().catch(() => ({}));
+    return data.success === "true" || data.success === true || res.status === 200;
+  } catch(e){ return false; }
+}
+
+function buildMailtoLink(){
+  const d = lastSubmitData;
+  const materiLabel = state.materi === "all" ? "Semua Bab (1–5)" : `Bab ${state.materi} — ${BAB_TITLE[state.materi]}`;
+  const subject = encodeURIComponent(`Tugas Pancasila — ${state.name} (${state.kelas})`);
+  const body =
+`TUGAS PENDIDIKAN PANCASILA KELAS VII
+=====================================
+
+Nama    : ${state.name}
+Kelas   : ${state.kelas}
+Materi  : ${materiLabel}
+Waktu   : ${new Date().toLocaleString("id-ID")}
+
+HASIL
+-----
+Nilai Akhir    : ${d.total} / 100
+Predikat       : ${d.p.t}
+Pilihan Ganda  : ${d.benarMC} / ${state.quizMC.length} benar (${d.poinMC} poin)
+Uraian         : ${Math.round(d.essayCredit*100)/100} / ${state.quizEssay.length} (${d.poinEssay} poin)
+Pelanggaran    : ${state.cheatCount} kali
+Status         : ${d.autoSubmit ? "AUTO-SUBMIT" : "Dikumpulkan manual"}
+
+${buildDetailText()}`;
+  return `mailto:${TEACHER_EMAIL}?subject=${subject}&body=${encodeURIComponent(body)}`;
+}
+
+async function autoSendEmail(){
+  const btn = $("btnSendEmail");
+  const status = $("emailStatus");
+  if(!btn || !status) return;
+  status.innerHTML = `<span style="color:var(--muted)">⏳ Mengirim otomatis ke ${TEACHER_EMAIL}...</span>`;
+  const ok = await Promise.race([
+    sendViaFormSubmit(),
+    new Promise(r => setTimeout(() => r(false), 12000))
+  ]);
+  if(ok){
+    status.innerHTML = `<span class="ok">✅ Berhasil terkirim ke <b>${TEACHER_EMAIL}</b></span>`;
+    btn.textContent = "✅ Terkirim ke Email Guru";
+    btn.disabled = true;
+    btn.classList.remove("ghost");
+  } else {
+    status.innerHTML = `<span class="fail">❌ Gagal mengirim otomatis. Gunakan cara manual di bawah.</span>`;
+    btn.disabled = false;
+    btn.textContent = "📧 Buka Aplikasi Email (Manual)";
+    btn.classList.add("ghost");
+    btn.onclick = () => { window.location.href = buildMailtoLink(); };
+    showToast("Gagal kirim otomatis. Klik tombol email untuk manual.");
+  }
+}
+
+window.addEventListener("beforeunload", e => {
+  if(quizActive){ e.preventDefault(); e.returnValue = ""; }
+});
+</script>
+</body>
+</html>
